@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craftsman Cabinet Creator - Professional Cabinet Generation for Blender</title>
+    <style>
+        :root {
+            --primary: #E87D0D;
+            --primary-dark: #C66A0A;
+            --primary-light: #FF9933;
+            --primary-glow: rgba(232, 125, 13, 0.3);
+            --bg-dark: #0d0d0d;
+            --bg-section: #141414;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --border: #2a2a2a;
+            --gradient-1: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            --gradient-2: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 13, 13, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0 2rem;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-doc-link {
+            background: var(--gradient-2);
+            color: white !important;
+            padding: 6px 14px;
+            border-radius: 6px;
+        }
+
+        .nav-doc-link:hover {
+            color: white !important;
+            opacity: 0.9;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 2rem 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse, var(--primary-glow) 0%, transparent 70%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-text h1 span {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .hero-feature-icon {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background: rgba(232, 125, 13, 0.1);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-image-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+        }
+
+        .hero-image-placeholder {
+            aspect-ratio: 16/10;
+            background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 1rem;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .placeholder-text {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .placeholder-label {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Floating badges on hero */
+        .floating-badge {
+            position: absolute;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-badge-1 {
+            top: 10%;
+            right: -20px;
+            animation-delay: 0s;
+        }
+
+        .floating-badge-2 {
+            bottom: 20%;
+            left: -30px;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-badge-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(232, 125, 13, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .floating-badge-text {
+            font-size: 0.85rem;
+        }
+
+        .floating-badge-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .floating-badge-sub {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 2rem;
+        }
+
+        .section-dark {
+            background: var(--bg-section);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: rgba(232, 125, 13, 0.15);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(232, 125, 13, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Showcase Section */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .showcase-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .showcase-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .showcase-image {
+            aspect-ratio: 16/10;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            overflow: hidden;
+        }
+
+        .showcase-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+        }
+
+        .showcase-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .showcase-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Large Feature Blocks */
+        .feature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+
+        .feature-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-block.reverse {
+            direction: rtl;
+        }
+
+        .feature-block.reverse > * {
+            direction: ltr;
+        }
+
+        .feature-block-content {
+            padding: 1rem 0;
+        }
+
+        .feature-block-label {
+            display: inline-block;
+            background: rgba(232, 125, 13, 0.15);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-block-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .feature-block-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .feature-block-list {
+            list-style: none;
+        }
+
+        .feature-block-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .feature-block-list li::before {
+            content: '\2713';
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-block-visual {
+            position: relative;
+        }
+
+        .feature-block-image {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-block-placeholder {
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            gap: 1rem;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-item.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-image {
+            aspect-ratio: 1;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            overflow: hidden;
+        }
+
+        .gallery-item.featured .gallery-image {
+            aspect-ratio: 1;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay-text {
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: var(--gradient-2);
+            padding: 60px 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Workflow Section */
+        .workflow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            z-index: 0;
+        }
+
+        .workflow-number {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .workflow-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .workflow-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 120px 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(ellipse, var(--primary-glow) 0%, transparent 60%);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-section);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Logo image styling */
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #ffffff;
+        }
+
+        .logo-image-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #ffffff;
+        }
+
+        .logo-image-hero {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+            padding: 2rem;
+        }
+
+        .logo-image-feature {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            padding: 1.5rem;
+        }
+
+        .logo-image-gallery {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #ffffff;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .logo-image-gallery {
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-tagline {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-features {
+                justify-content: center;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .floating-badge {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-block {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .feature-block.reverse {
+                direction: ltr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-item.featured {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Keep workflow horizontal on tablet/iframe sizes */
+            .workflow-container {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .workflow-step {
+                min-width: 140px;
+                flex-shrink: 0;
+            }
+
+            .workflow-step:not(:last-child)::after {
+                right: -50%;
+                width: 100%;
+            }
+
+            .workflow-number {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .workflow-title {
+                font-size: 0.95rem;
+            }
+
+            .workflow-desc {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .logo {
+                font-size: 1rem;
+            }
+
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0;
+            }
+
+            .nav-links {
+                gap: 0.75rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .showcase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-item.featured {
+                grid-column: span 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+
+            /* Workflow stays horizontal even on mobile */
+            .workflow-container {
+                flex-wrap: nowrap;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+
+            .workflow-step {
+                min-width: 120px;
+            }
+
+            .workflow-number {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .workflow-step:not(:last-child)::after {
+                top: 25px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar-content {
+                height: 60px;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.75rem;
+                padding: 4px 6px;
+            }
+
+            .nav-doc-link {
+                padding: 4px 10px;
+            }
+
+            .logo {
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+
+            .logo-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        /* Extra small screens - workflow still horizontal */
+        @media (max-width: 480px) {
+            .nav-links li:nth-child(2),
+            .nav-links li:nth-child(3) {
+                display: none;
+            }
+
+            .workflow-container {
+                gap: 0.25rem;
+            }
+
+            .workflow-step {
+                min-width: 100px;
+            }
+
+            .workflow-number {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .workflow-title {
+                font-size: 0.85rem;
+            }
+
+            .workflow-desc {
+                font-size: 0.75rem;
+            }
+
+            .workflow-step:not(:last-child)::after {
+                top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="logo">
+                <div class="logo-icon"><img src="Logo.png" alt="Logo"></div>
+                Craftsman <span>Cabinet Creator</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#showcase">Showcase</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="documentation.html" target="_blank" class="nav-doc-link">Docs</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Create Stunning Cabinets <span>in Seconds</span></h1>
+                <p class="hero-tagline">Professional parametric cabinet generation powered by Geometry Nodes. Design, customize, and export production-ready cabinet geometry directly in Blender.</p>
+
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">&#x2713;</span>
+                        Real-time Updates
+                    </div>
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">&#x2713;</span>
+                        Modular Components
+                    </div>
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">&#x2713;</span>
+                        Production Ready
+                    </div>
+                    <div class="hero-feature">
+                        <span class="hero-feature-icon">&#x2713;</span>
+                        Non-Destructive
+                    </div>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="#features" class="btn btn-primary">
+                        &#x2728; Explore Features
+                    </a>
+                    <a href="#showcase" class="btn btn-secondary">
+                        &#x25B6; View Examples
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <div style="aspect-ratio: 16/10;">
+                        <img src="Logo.png" alt="Craftsman Cabinet Creator" class="logo-image-hero">
+                    </div>
+                </div>
+
+                <div class="floating-badge floating-badge-1">
+                    <div class="floating-badge-icon">&#x26A1;</div>
+                    <div class="floating-badge-text">
+                        <div class="floating-badge-title">Instant Preview</div>
+                        <div class="floating-badge-sub">Real-time viewport updates</div>
+                    </div>
+                </div>
+
+                <div class="floating-badge floating-badge-2">
+                    <div class="floating-badge-icon">&#x1F3AF;</div>
+                    <div class="floating-badge-text">
+                        <div class="floating-badge-title">Precise Control</div>
+                        <div class="floating-badge-sub">Millimeter accuracy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Features</span>
+                <h2 class="section-title">Everything You Need for Cabinet Design</h2>
+                <p class="section-subtitle">Powerful tools designed for architects, interior designers, and 3D artists who demand precision and efficiency.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F4D0;</div>
+                    <h3 class="feature-title">Parametric Design</h3>
+                    <p class="feature-desc">Adjust every dimension with intuitive sliders. Width, height, depth, thickness - all parameters update in real-time.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F5C4;</div>
+                    <h3 class="feature-title">Modular Drawers</h3>
+                    <p class="feature-desc">Add unlimited drawer units with individual controls. Duplicate with inherited settings for consistent designs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">&#x2501;</div>
+                    <h3 class="feature-title">Fixed Shelves</h3>
+                    <p class="feature-desc">Insert fixed shelving at any position. Perfect for display cabinets, bookcases, and storage solutions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">&#x25A0;</div>
+                    <h3 class="feature-title">Side Panels</h3>
+                    <p class="feature-desc">Add decorative or structural side panels with customizable styles and dimensions.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">&#x25C9;</div>
+                    <h3 class="feature-title">Bevel Presets</h3>
+                    <p class="feature-desc">One-click professional edge finishing with optimized bevel settings for realistic renders.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">&#x1F3A8;</div>
+                    <h3 class="feature-title">Material Ready</h3>
+                    <p class="feature-desc">Automatic UV setup for seamless material application. Works with any wood grain or laminate texture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase Section -->
+    <section id="showcase">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Showcase</span>
+                <h2 class="section-title">See What You Can Create</h2>
+                <p class="section-subtitle">From kitchen cabinets to custom furniture, the possibilities are endless.</p>
+            </div>
+
+            <div class="showcase-grid">
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="Logo.png" alt="Kitchen Cabinets" class="logo-image-cover">
+                    </div>
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Kitchen Cabinets</h3>
+                        <p class="showcase-desc">Complete kitchen cabinet sets with multiple drawer configurations</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="Logo.png" alt="Bathroom Vanities" class="logo-image-cover">
+                    </div>
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Bathroom Vanities</h3>
+                        <p class="showcase-desc">Custom vanity units with integrated storage solutions</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="Logo.png" alt="Office Storage" class="logo-image-cover">
+                    </div>
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Office Storage</h3>
+                        <p class="showcase-desc">Professional storage systems for modern workspaces</p>
+                    </div>
+                </div>
+
+                <div class="showcase-item">
+                    <div class="showcase-image">
+                        <img src="Logo.png" alt="Custom Furniture" class="logo-image-cover">
+                    </div>
+                    <div class="showcase-overlay">
+                        <h3 class="showcase-title">Custom Furniture</h3>
+                        <p class="showcase-desc">Unique furniture pieces tailored to any space</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Blocks Section -->
+    <section class="section-dark">
+        <div class="container">
+            <!-- Feature Block 1: Parametric Control -->
+            <div class="feature-block">
+                <div class="feature-block-content">
+                    <span class="feature-block-label">Parametric Control</span>
+                    <h2 class="feature-block-title">Total Control Over Every Dimension</h2>
+                    <p class="feature-block-desc">Adjust cabinet dimensions with precision down to the millimeter. Every parameter is exposed through an intuitive interface that updates your model in real-time.</p>
+                    <ul class="feature-block-list">
+                        <li>Width, height, and depth controls</li>
+                        <li>Panel thickness adjustments</li>
+                        <li>Toe kick height and depth</li>
+                        <li>Custom gap and spacing values</li>
+                    </ul>
+                </div>
+                <div class="feature-block-visual">
+                    <div class="feature-block-image">
+                        <div style="aspect-ratio: 4/3;">
+                            <img src="Logo.png" alt="Parametric Control" class="logo-image-feature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Block 2: Drawer System -->
+            <div class="feature-block reverse">
+                <div class="feature-block-content">
+                    <span class="feature-block-label">Drawer System</span>
+                    <h2 class="feature-block-title">Unlimited Drawer Configurations</h2>
+                    <p class="feature-block-desc">Create any drawer layout imaginable. Add, duplicate, and position drawers independently with full control over size, position, and styling.</p>
+                    <ul class="feature-block-list">
+                        <li>Multiple drawer instances per cabinet</li>
+                        <li>Independent vertical positioning</li>
+                        <li>Duplicate with inherited parameters</li>
+                        <li>Custom drawer front styling</li>
+                    </ul>
+                </div>
+                <div class="feature-block-visual">
+                    <div class="feature-block-image">
+                        <div style="aspect-ratio: 4/3;">
+                            <img src="Logo.png" alt="Drawer System" class="logo-image-feature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Block 3: Non-Destructive -->
+            <div class="feature-block">
+                <div class="feature-block-content">
+                    <span class="feature-block-label">Non-Destructive</span>
+                    <h2 class="feature-block-title">Change Anything, Anytime</h2>
+                    <p class="feature-block-desc">Built on Blender's Geometry Nodes system, your cabinet remains fully editable until you choose to finalize it. Make changes at any stage of your project.</p>
+                    <ul class="feature-block-list">
+                        <li>Full undo/redo support</li>
+                        <li>Modify dimensions after creation</li>
+                        <li>Convert to mesh when ready</li>
+                        <li>Preserves other modifiers in stack</li>
+                    </ul>
+                </div>
+                <div class="feature-block-visual">
+                    <div class="feature-block-image">
+                        <div style="aspect-ratio: 4/3;">
+                            <img src="Logo.png" alt="Non-Destructive Workflow" class="logo-image-feature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Block 4: Material & UV -->
+            <div class="feature-block reverse">
+                <div class="feature-block-content">
+                    <span class="feature-block-label">Materials</span>
+                    <h2 class="feature-block-title">Production-Ready UV Mapping</h2>
+                    <p class="feature-block-desc">Automatic UV coordinates are generated for each surface, ensuring your materials look perfect without manual UV unwrapping.</p>
+                    <ul class="feature-block-list">
+                        <li>Automatic UV generation</li>
+                        <li>One-click material UV setup</li>
+                        <li>Works with any PBR material</li>
+                        <li>Consistent grain direction</li>
+                    </ul>
+                </div>
+                <div class="feature-block-visual">
+                    <div class="feature-block-image">
+                        <div style="aspect-ratio: 4/3;">
+                            <img src="Logo.png" alt="Material UV Mapping" class="logo-image-feature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Gallery</span>
+                <h2 class="section-title">Finished Projects</h2>
+                <p class="section-subtitle">Real results created with Craftsman Cabinet Creator</p>
+            </div>
+
+            <div class="gallery-grid">
+                <div class="gallery-item featured">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Featured Project" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View Project</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Gallery Project 1" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Gallery Project 2" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Gallery Project 3" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Gallery Project 4" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View</span>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-image">
+                        <img src="Logo.png" alt="Gallery Project 5" class="logo-image-gallery">
+                    </div>
+                    <div class="gallery-overlay">
+                        <span class="gallery-overlay-text">&#x1F50D; View</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Component Types</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Parameters</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Non-Destructive</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">&infin;</div>
+                <div class="stat-label">Possibilities</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Workflow</span>
+                <h2 class="section-title">Simple 5-Step Process</h2>
+                <p class="section-subtitle">From concept to final mesh in minutes, not hours.</p>
+            </div>
+
+            <div class="workflow-container">
+                <div class="workflow-step">
+                    <div class="workflow-number">1</div>
+                    <h3 class="workflow-title">Apply Generator</h3>
+                    <p class="workflow-desc">Start with any mesh and apply the cabinet generator</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">2</div>
+                    <h3 class="workflow-title">Set Dimensions</h3>
+                    <p class="workflow-desc">Adjust width, height, depth to your specifications</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">3</div>
+                    <h3 class="workflow-title">Add Components</h3>
+                    <p class="workflow-desc">Insert drawers, shelves, and side panels</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">4</div>
+                    <h3 class="workflow-title">Apply Materials</h3>
+                    <p class="workflow-desc">Add materials with automatic UV support</p>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="workflow-number">5</div>
+                    <h3 class="workflow-title">Export</h3>
+                    <p class="workflow-desc">Convert to mesh and use in your scene</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Transform Your Cabinet Design Workflow</h2>
+            <p class="cta-subtitle">Professional parametric cabinet generation with precision and ease. Compatible with Blender 4.5 LTS and 5.0+</p>
+            <div class="cta-buttons">
+                <a href="#features" class="btn btn-primary">
+                    &#x2728; Explore All Features
+                </a>
+                <a href="documentation.html" target="_blank" class="btn btn-secondary">
+                    &#x1F4D6; View Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Craftsman <span>Cabinet Creator</span></div>
+            <p class="footer-text">Professional parametric cabinet generation for Blender 4.5 LTS and 5.0+</p>
+            <div class="footer-links">
+                <a href="documentation.html" target="_blank">Documentation</a>
+                <a href="documentation.html#troubleshooting" target="_blank">Support</a>
+                <a href="#features">Features</a>
+            </div>
+            <p class="footer-copyright">&copy; 2026 3DQuads. Licensed under GPL-3.0-or-later.</p>
+        </div>
+    </footer>
+</body>
+</html>
