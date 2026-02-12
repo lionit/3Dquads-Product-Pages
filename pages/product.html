@@ -200,6 +200,45 @@
             flex-wrap: wrap;
         }
 
+        .hero-creators {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-creators-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .hero-creators-avatars {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .creator-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            display: block;
+        }
+
+        .creator-avatar:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .creator-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
@@ -901,6 +940,10 @@
                 justify-content: center;
             }
 
+            .hero-creators {
+                justify-content: center;
+            }
+
             .hero-visual {
                 max-width: 600px;
                 margin: 0 auto;
@@ -1164,6 +1207,18 @@
                     <div class="hero-feature">
                         <span class="hero-feature-icon">&#x2713;</span>
                         Non-Destructive
+                    </div>
+                </div>
+
+                <div class="hero-creators">
+                    <span class="hero-creators-label">Created by</span>
+                    <div class="hero-creators-avatars">
+                        <a href="https://superhivemarket.com/creators/3dquads" target="_blank" rel="noopener noreferrer" class="creator-avatar" title="3DQuads">
+                            <img src="../images/avatar-3dquads.png" alt="3DQuads">
+                        </a>
+                        <a href="https://cgcookie.com/courses/craftsman-precision-modeling-with-blender-for-real-world-application" target="_blank" rel="noopener noreferrer" class="creator-avatar" title="Sascha">
+                            <img src="../images/avatar-sascha.png" alt="Sascha">
+                        </a>
                     </div>
                 </div>
 
