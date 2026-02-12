@@ -700,6 +700,31 @@
             padding: 60px 2rem;
         }
 
+        /* Tutorial/Video Section */
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1230,6 +1255,9 @@
                     <a href="#showcase" class="btn btn-secondary">
                         &#x25B6; View Examples
                     </a>
+                    <a href="#tutorial" class="btn btn-secondary">
+                        &#x1F3AC; Watch Tutorial
+                    </a>
                 </div>
             </div>
 
@@ -1356,6 +1384,30 @@
                         <h3 class="showcase-title">Custom Furniture</h3>
                         <p class="showcase-desc">Unique furniture pieces tailored to any space</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tutorial Section -->
+    <section id="tutorial" class="section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Tutorial</span>
+                <h2 class="section-title">Learn How to Use It</h2>
+                <p class="section-subtitle">Watch our comprehensive video tutorial to master Craftsman Cabinet Creator</p>
+            </div>
+
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <!-- Replace VIDEO_ID with your actual YouTube video ID -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/VIDEO_ID" 
+                        title="Craftsman Cabinet Creator Tutorial"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
             </div>
         </div>
