@@ -1156,6 +1156,47 @@
             }
         }
 
+        /* Roadmap Section */
+.roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.roadmap-card {
+    background: linear-gradient(145deg, #2a2a2a, #222222);
+    border: 1px solid #3a3a3a;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.roadmap-card:hover {
+    transform: translateY(-8px);
+    border-color: #E87D0D;
+    box-shadow: 0 20px 40px rgba(232, 125, 13, 0.15);
+}
+
+.roadmap-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.roadmap-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.roadmap-desc {
+    font-size: 1rem;
+    color: #b0b0b0;
+    line-height: 1.6;
+}
+
         /* Extra small screens - workflow still horizontal */
         @media (max-width: 480px) {
             .nav-links li:nth-child(2),
@@ -1637,7 +1678,42 @@
             </div>
         </div>
     </section>
+<!-- Future Enhancements Section -->
+    <section id="roadmap">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Roadmap</span>
+                <h2 class="section-title">Future Enhancements Plan</h2>
+                <p class="section-subtitle">We're constantly improving. Here's what's coming next.</p>
+            </div>
 
+            <div class="roadmap-grid">
+                <div class="roadmap-card">
+                    <div class="roadmap-icon">🗄️</div>
+                    <h3 class="roadmap-title">Additional Cabinet Types</h3>
+                    <p class="roadmap-desc">Expanding our library with corner cabinets, wall cabinets, and more specialized configurations.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <div class="roadmap-icon">🚪</div>
+                    <h3 class="roadmap-title">More Front Designs</h3>
+                    <p class="roadmap-desc">Beyond Shaker style — adding flat panel, raised panel, glass inserts, and other popular door designs.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <div class="roadmap-icon">🔘</div>
+                    <h3 class="roadmap-title">Pulls & Handles</h3>
+                    <p class="roadmap-desc">Creative hardware designs including knobs, bar pulls, cup pulls, and decorative handles.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <div class="roadmap-icon">💬</div>
+                    <h3 class="roadmap-title">Customer Requested Features</h3>
+                    <p class="roadmap-desc">Your feedback shapes our development. Tell us what features would improve your workflow.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="cta-content">
