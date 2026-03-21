@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3DQuads Print Ready — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #13131f;
+      --bg-card2:  #16162a;
+      --border:    #1e1e38;
+      --accent:    #7c3aed;
+      --accent2:   #a855f7;
+      --accent3:   #c084fc;
+      --text:      #ffffff;
+      --text-muted:#c4c4d4;
+      --text-dim:  #7a7a9a;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --yellow:    #f59e0b;
+      --blue:      #3b82f6;
+      --radius:    10px;
+      --radius-lg: 16px;
+      --sidebar-w: 240px;
+      --content-max: 820px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      background: var(--bg-card);
+      padding: 32px 0 40px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .sidebar-brand {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .sidebar-brand a {
+      text-decoration: none;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .sidebar-brand-name {
+      font-size: 13px; font-weight: 700; color: var(--accent3); letter-spacing: .04em;
+    }
+    .sidebar-brand-sub {
+      font-size: 11px; color: var(--text-dim);
+    }
+
+    .sidebar-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--text-dim); padding: 0 20px; margin-bottom: 8px;
+    }
+    .sidebar nav { display: flex; flex-direction: column; }
+    .sidebar nav a {
+      font-size: 13px; color: var(--text-muted); text-decoration: none;
+      padding: 6px 20px; border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s, background .15s;
+      line-height: 1.4;
+    }
+    .sidebar nav a:hover {
+      color: var(--text); border-left-color: var(--accent2);
+      background: rgba(124,58,237,.07);
+    }
+    .sidebar nav a.active {
+      color: var(--accent3); border-left-color: var(--accent);
+      background: rgba(124,58,237,.1); font-weight: 600;
+    }
+    .sidebar nav a.sub {
+      padding-left: 32px; font-size: 12px;
+    }
+
+    /* ── Main content ── */
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 56px 48px 80px;
+    }
+    .content { max-width: var(--content-max); }
+
+    /* ── Doc header ── */
+    .doc-header {
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-header .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent3); background: rgba(124,58,237,.15);
+      border: 1px solid rgba(124,58,237,.3); border-radius: 100px;
+      padding: 3px 10px; margin-bottom: 16px;
+    }
+    .doc-header h1 {
+      font-size: 36px; font-weight: 900; letter-spacing: -.02em; line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .doc-header h1 span {
+      background: linear-gradient(135deg, #a855f7, #7c3aed, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .doc-header p { font-size: 17px; color: var(--text-muted); max-width: 600px; }
+
+    .doc-meta {
+      display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;
+    }
+    .doc-meta-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--text-dim);
+    }
+    .doc-meta-item strong { color: var(--text-muted); }
+
+    /* ── Section titles ── */
+    .doc-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 32px;
+    }
+    .doc-section h2 {
+      font-size: 24px; font-weight: 800; letter-spacing: -.02em;
+      margin-bottom: 20px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .doc-section h2 .sec-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      font-size: 13px; font-weight: 700; flex-shrink: 0;
+    }
+    .doc-section h3 {
+      font-size: 17px; font-weight: 700; margin: 28px 0 12px;
+      color: var(--accent3);
+    }
+    .doc-section h4 {
+      font-size: 14px; font-weight: 700; margin: 20px 0 8px; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .doc-section p { color: var(--text-muted); margin-bottom: 14px; }
+    .doc-section p:last-child { margin-bottom: 0; }
+
+    /* ── Lists ── */
+    .doc-list {
+      list-style: none; display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 16px;
+    }
+    .doc-list li {
+      display: flex; gap: 10px; color: var(--text-muted); font-size: 14px;
+    }
+    .doc-list li::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent2); flex-shrink: 0; margin-top: 7px;
+    }
+    ol.doc-list { counter-reset: doc-list-counter; }
+    ol.doc-list li::before {
+      content: counter(doc-list-counter);
+      counter-increment: doc-list-counter;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(124,58,237,.25); color: var(--accent3);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    /* ── Code ── */
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 12.5px; background: rgba(124,58,237,.12);
+      color: var(--accent3); border: 1px solid rgba(124,58,237,.25);
+      border-radius: 4px; padding: 1px 6px;
+    }
+    pre {
+      background: var(--bg-card2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
+      overflow-x: auto; margin: 16px 0;
+    }
+    pre code {
+      background: none; border: none; padding: 0;
+      color: var(--text-muted); font-size: 13px;
+    }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0 24px; border-radius: var(--radius); }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 13px;
+    }
+    thead tr {
+      background: var(--bg-card2);
+    }
+    thead th {
+      text-align: left; padding: 12px 14px;
+      font-weight: 700; font-size: 11px; letter-spacing: .07em; text-transform: uppercase;
+      color: var(--text-dim); border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,.02); }
+    tbody td {
+      padding: 10px 14px; color: var(--text-muted); vertical-align: top;
+    }
+    tbody td:first-child { color: var(--text); font-weight: 600; }
+    tbody td code { font-size: 11.5px; }
+
+    /* ── Step cards ── */
+    .step-grid {
+      display: flex; flex-direction: column; gap: 2px; margin: 20px 0;
+    }
+    .step-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 24px;
+      transition: border-color .2s;
+    }
+    .step-card:hover { border-color: rgba(124,58,237,.4); }
+    .step-card-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 12px;
+    }
+    .step-badge {
+      width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 900; color: #fff;
+    }
+    .step-card h3 {
+      font-size: 16px; font-weight: 700; color: var(--text);
+      margin: 0;
+    }
+    .step-card p { font-size: 14px; color: var(--text-muted); margin: 0; }
+
+    /* ── Callouts ── */
+    .callout {
+      display: flex; gap: 14px; padding: 14px 18px;
+      border-radius: var(--radius); margin: 16px 0; border-left: 3px solid;
+    }
+    .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .callout-body { font-size: 14px; color: var(--text-muted); }
+    .callout-body strong { color: var(--text); }
+    .callout.warn { background: rgba(245,158,11,.07); border-color: var(--yellow); }
+    .callout.info { background: rgba(59,130,246,.07); border-color: var(--blue); }
+    .callout.tip  { background: rgba(34,197,94,.07);  border-color: var(--green); }
+    .callout.limit { background: rgba(239,68,68,.07); border-color: var(--red); }
+
+    /* ── Feature pills ── */
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px; margin: 16px 0 24px;
+    }
+    .feature-pill {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+    }
+    .feature-pill-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .feature-pill-desc { font-size: 12px; color: var(--text-dim); }
+
+    /* ── Workflow checklist ── */
+    .workflow-list {
+      display: flex; flex-direction: column; gap: 4px; margin: 20px 0;
+    }
+    .workflow-item {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 14px 18px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .workflow-step {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: #fff;
+    }
+    .workflow-item-body { flex: 1; }
+    .workflow-item-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .workflow-item-desc { font-size: 13px; color: var(--text-dim); }
+
+    /* ── Heatmap legend ── */
+    .heatmap-legend {
+      display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0;
+    }
+    .heatmap-swatch {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .swatch {
+      width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0;
+    }
+
+    /* ── Image placeholder ── */
+    .img-placeholder {
+      position: relative; width: 100%; padding-top: 50%;
+      background: var(--bg-card2); border: 2px dashed rgba(124,58,237,.4);
+      border-radius: var(--radius); overflow: hidden; margin: 20px 0;
+    }
+    .img-placeholder-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; padding: 16px; text-align: center;
+    }
+    .img-placeholder-icon { font-size: 28px; opacity: .5; }
+    .img-placeholder-label { font-size: 12px; color: var(--text-dim); font-family: monospace; }
+
+    /* ── FAQ ── */
+    .faq-list { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+    .faq-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px;
+    }
+    .faq-q { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .faq-a { font-size: 13px; color: var(--text-muted); }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent3); background: rgba(124,58,237,.15);
+      border: 1px solid rgba(124,58,237,.3); border-radius: 100px;
+      padding: 3px 10px;
+    }
+    .tag-green {
+      color: var(--green); background: rgba(34,197,94,.1); border-color: rgba(34,197,94,.3);
+    }
+    .tag-red {
+      color: var(--red); background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3);
+    }
+    .tag-yellow {
+      color: var(--yellow); background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.3);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      margin-left: var(--sidebar-w);
+    }
+    footer p { font-size: 13px; color: var(--text-dim); }
+    footer a { color: var(--accent3); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* ── Mobile ── */
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+      .main { padding: 32px 20px 60px; }
+      footer { margin-left: 0; padding: 24px 20px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .doc-header h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <a href="3DQuads_Print_ready.HTML">
+        <img src="../images/Logo Black.jpg" alt="3DQuads Print Ready" style="width:100%;max-width:160px;height:auto;margin-bottom:10px;display:block;">
+        <span class="sidebar-brand-name">3DQuads Print Ready</span>
+        <span class="sidebar-brand-sub">Documentation · v1.0.0</span>
+      </a>
+    </div>
+    <div class="sidebar-label">On This Page</div>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#features">Features</a>
+      <a href="#installation">Installation</a>
+      <a href="#quickstart">Quick Start</a>
+      <a href="#usage">Usage Guide</a>
+      <a href="#usage-step1" class="sub">Step 1 — Printer Profile</a>
+      <a href="#usage-step2" class="sub">Step 2 — Scale &amp; Units</a>
+      <a href="#usage-step3" class="sub">Step 3 — Mesh Health</a>
+      <a href="#usage-step4" class="sub">Step 4 — Wall Thickness</a>
+      <a href="#usage-step5" class="sub">Step 5 — Overhangs</a>
+      <a href="#usage-step6" class="sub">Step 6 — Model Splitter</a>
+      <a href="#usage-step7" class="sub">Step 7 — Export</a>
+      <a href="#operators">Operators</a>
+      <a href="#parameters">Parameters</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#faq">FAQ</a>
+      <a href="#technical">Technical Details</a>
+    </nav>
+  </aside>
+
+  <!-- ═══════════════════════════════════════ MAIN ═══ -->
+  <main class="main">
+    <div class="content">
+
+      <!-- Doc header -->
+      <div class="doc-header">
+        <div class="tag">Blender 4.5+ Extension</div>
+        <h1><span>3DQuads Print Ready</span><br>Documentation</h1>
+        <p>Complete reference for every feature, operator, parameter, and workflow in the extension.</p>
+        <div class="doc-meta">
+          <div class="doc-meta-item">Version <strong>1.0.0</strong></div>
+          <div class="doc-meta-item">Blender <strong>4.5+</strong></div>
+          <div class="doc-meta-item">License <strong>GPL-3.0</strong></div>
+          <div class="doc-meta-item">By <strong>3DQuads</strong></div>
+        </div>
+      </div>
+
+
+      <!-- ════════════════════════════════ OVERVIEW ═══ -->
+      <section class="doc-section" id="overview">
+        <h2><span class="sec-num">1</span> Overview</h2>
+        <p>3DQuads Print Ready is a Blender extension that adds a complete 3D print preparation pipeline directly inside the 3D Viewport's N-panel. Instead of switching between external tools or running manual checks, the extension walks you through seven guided steps — from selecting a printer to exporting a print-ready file — without ever leaving Blender.</p>
+
+        <div class="callout info">
+          <span class="callout-icon">ℹ</span>
+          <div class="callout-body">
+            <strong>Mesh objects only.</strong> The extension operates on the active mesh object. NURBS, curves, empties, and other object types are not supported. All operators are disabled when no mesh is selected.
+          </div>
+        </div>
+
+        <h3>Requirements</h3>
+        <ul class="doc-list">
+          <li>Blender 4.5 or newer (Extension system required)</li>
+          <li>No external Python packages — only built-in Blender APIs (<code>bpy</code>, <code>bmesh</code>, <code>mathutils</code>)</li>
+          <li>GPL-3.0-or-later license</li>
+        </ul>
+
+        <h3>Where to find it</h3>
+        <p>Once installed, the extension lives in the <strong>N-panel</strong> of the 3D Viewport under the tab named <code>Print Ready</code>. Press <kbd>N</kbd> inside the 3D Viewport to open the panel, then click the <strong>Print Ready</strong> tab.</p>
+
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">Add screenshot: ../images/docs-overview.jpg<br>Suggested: 3D Viewport with Print Ready N-panel open showing all 7 steps collapsed</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ FEATURES ═══ -->
+      <section class="doc-section" id="features">
+        <h2><span class="sec-num">2</span> Features</h2>
+        <div class="feature-grid">
+          <div class="feature-pill">
+            <div class="feature-pill-label">13 Printer Presets</div>
+            <div class="feature-pill-desc">Bambu, Prusa, Creality, Elegoo, Anycubic, Artillery, Voron + Custom</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">Scale Fixer</div>
+            <div class="feature-pill-desc">Auto-corrects scene units and unapplied object transforms</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">5-Check Mesh Health</div>
+            <div class="feature-pill-desc">Non-manifold, normals, zero faces, loose verts, self-intersections</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">Wall Thickness Heatmap</div>
+            <div class="feature-pill-desc">BVHTree ray-cast analysis with live overlay and face selection</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">Overhang Detection</div>
+            <div class="feature-pill-desc">Configurable angle threshold, heatmap overlay, orientation suggester</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">Model Splitter</div>
+            <div class="feature-pill-desc">Bisect-based splitting with capped faces and build volume preview</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">STL / 3MF / OBJ Export</div>
+            <div class="feature-pill-desc">Correct mm-scale output, modifier baking, split-part awareness</div>
+          </div>
+          <div class="feature-pill">
+            <div class="feature-pill-label">Zero Dependencies</div>
+            <div class="feature-pill-desc">Pure Python — no pip installs, no external tools needed</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ INSTALLATION ═══ -->
+      <section class="doc-section" id="installation">
+        <h2><span class="sec-num">3</span> Installation</h2>
+        <ol class="doc-list">
+          <li>Download the <code>print_ready-1.0.0.zip</code> file.</li>
+          <li>Open Blender 4.5 or newer.</li>
+          <li>Go to <strong>Edit → Preferences → Extensions</strong>.</li>
+          <li>Click <strong>Install from Disk</strong> (top-right dropdown) and select the ZIP file.</li>
+          <li>The extension will appear in the list. Ensure the toggle is <strong>enabled</strong>.</li>
+          <li>Open the <strong>3D Viewport</strong>, press <kbd>N</kbd>, and click the <strong>Print Ready</strong> tab.</li>
+        </ol>
+
+        <div class="callout tip">
+          <span class="callout-icon">✓</span>
+          <div class="callout-body">
+            <strong>Do not extract the ZIP.</strong> Blender installs directly from the ZIP file — extracting it first will cause the installation to fail.
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ QUICK START ═══ -->
+      <section class="doc-section" id="quickstart">
+        <h2><span class="sec-num">4</span> Quick Start</h2>
+        <p>Get a model ready for printing in five steps:</p>
+        <ol class="doc-list">
+          <li>Select the mesh object you want to prepare.</li>
+          <li>In the <code>Print Ready</code> tab → <strong>Step 1</strong>: pick your printer from the preset dropdown. All fields auto-fill.</li>
+          <li><strong>Step 2</strong>: click <strong>Validate Scale</strong>. If warnings appear, click <strong>Fix Scale to Millimeters</strong>.</li>
+          <li><strong>Step 3</strong>: click <strong>Run All Checks</strong>. If issues are found, click <strong>Fix All Issues</strong>.</li>
+          <li><strong>Step 7</strong>: set an export directory, then click <strong>Export for Printing</strong>.</li>
+        </ol>
+        <div class="callout info">
+          <span class="callout-icon">ℹ</span>
+          <div class="callout-body">Steps 4–6 (wall thickness, overhangs, splitting) are optional — run them only if your print requires tighter quality control or if the model exceeds your printer's build volume.</div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ USAGE GUIDE ═══ -->
+      <section class="doc-section" id="usage">
+        <h2><span class="sec-num">5</span> Usage Guide</h2>
+        <p>Each step in the N-panel is a collapsible sub-panel. They work independently — you can run any step at any time, though the recommended order maximises accuracy.</p>
+
+        <!-- Step 1 -->
+        <div id="usage-step1">
+          <h3>Step 1 — Printer Profile</h3>
+          <p>Select your printer to automatically fill all dimensional parameters used by subsequent steps.</p>
+
+          <h4>Built-in presets (13)</h4>
+          <ul class="doc-list">
+            <li><strong>FDM:</strong> Bambu Lab P1S, X1 Carbon, A1 · Prusa MK4S, Mini+ · Creality Ender 3 V3, K1 Max · Anycubic Kobra 3 · Artillery Sidewinder X4 Plus · Voron 2.4 350mm</li>
+            <li><strong>Resin:</strong> Elegoo Mars 4 Ultra, Saturn 4 Ultra</li>
+            <li><strong>Custom:</strong> all fields are left editable — enter your own values manually</li>
+          </ul>
+
+          <p>Selecting a preset auto-fills: <strong>Printer Type</strong>, <strong>Build Volume</strong> (X/Y/Z), <strong>Nozzle Diameter</strong>, <strong>Min Wall Thickness</strong>, <strong>Layer Height</strong>, and — importantly — the <strong>Thickness Threshold</strong> used in Step 4.</p>
+
+          <div class="callout tip">
+            <span class="callout-icon">✓</span>
+            <div class="callout-body">Always set the printer preset <em>first</em>. It seeds the correct values into every downstream step, including wall thickness analysis and the build volume visualisation in the splitter.</div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="usage-step2">
+          <h3>Step 2 — Scale &amp; Units</h3>
+          <p>Ensures the Blender scene and the object's transform are configured correctly for real-world millimetre output.</p>
+
+          <h4>Validate Scale</h4>
+          <p>Checks three conditions simultaneously:</p>
+          <ul class="doc-list">
+            <li>Scene unit system is <strong>Metric</strong></li>
+            <li>Scene <code>unit_scale</code> is <code>0.001</code> (so 1 Blender Unit = 1 mm)</li>
+            <li>The active object has <strong>no unapplied scale</strong> (all axes = 1.0)</li>
+          </ul>
+
+          <h4>Fix Scale to Millimeters</h4>
+          <p>Corrects all three conditions in a single click: sets Metric, sets <code>scale_length = 0.001</code>, applies the object's scale transform. Supports undo.</p>
+
+          <h4>Target Unit</h4>
+          <p>Controls how the object dimensions are <em>displayed</em> in the panel. Internally everything stays in Blender Units (= mm). Options: <strong>Millimeters</strong>, <strong>Centimeters</strong>, <strong>Inches</strong>.</p>
+
+          <h4>Build volume fit</h4>
+          <p>After validation, the panel shows the object's dimensions alongside the printer's build volume. If the model overflows an axis, a warning indicates which axis to address — either by scaling the model or by splitting it in Step 6.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="usage-step3">
+          <h3>Step 3 — Mesh Health</h3>
+          <p>Runs five targeted mesh checks that are the most common causes of slicer failures and print defects.</p>
+
+          <div class="img-placeholder">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-icon">📷</div>
+              <div class="img-placeholder-label">Add screenshot: ../images/docs-step3.jpg<br>Suggested: Mesh Health panel with issues found, fix buttons visible</div>
+            </div>
+          </div>
+
+          <h4>The five checks</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Check</th><th>What it detects</th><th>Auto-fixable?</th></tr></thead>
+              <tbody>
+                <tr><td>Non-Manifold Edges</td><td>Edges connected to more or fewer than 2 faces (holes, internal faces, T-junctions)</td><td><span class="tag tag-green">Yes</span></td></tr>
+                <tr><td>Flipped Normals</td><td>Faces whose normals are inconsistent with their neighbours (dot product &lt; −0.5)</td><td><span class="tag tag-green">Yes</span></td></tr>
+                <tr><td>Zero-Area Faces</td><td>Degenerate faces with area &lt; 1×10⁻⁸ (collapsed triangles/quads)</td><td><span class="tag tag-green">Yes</span></td></tr>
+                <tr><td>Loose Vertices</td><td>Vertices not connected to any edge</td><td><span class="tag tag-green">Yes</span></td></tr>
+                <tr><td>Self-Intersections</td><td>Face pairs that geometrically penetrate each other (BVHTree overlap)</td><td><span class="tag tag-red">No</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Fix order (Fix All)</h4>
+          <p>When <strong>Fix All Issues</strong> is used, repairs run in this order to avoid cascade failures:</p>
+          <ol class="doc-list">
+            <li>Delete loose vertices</li>
+            <li>Delete zero-area faces</li>
+            <li>Recalculate face normals outward</li>
+            <li>Dissolve degenerate edges + fill boundary holes</li>
+          </ol>
+
+          <div class="callout limit">
+            <span class="callout-icon">⚠</span>
+            <div class="callout-body">
+              <strong>Fix All is blocked</strong> if: the mesh has <strong>shape keys</strong> (topology changes would corrupt them), or the mesh data has <strong>multiple users</strong> (linked copies). In either case, the operator reports the reason. See Troubleshooting for solutions.
+            </div>
+          </div>
+
+          <div class="callout warn">
+            <span class="callout-icon">!</span>
+            <div class="callout-body">
+              <strong>Self-intersections are detected but not fixed automatically.</strong> They require manual geometry editing — use a Boolean → Union modifier or sculpt tools to resolve geometry that passes through itself.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div id="usage-step4">
+          <h3>Step 4 — Wall Thickness</h3>
+          <p>Identifies areas of the mesh that are thinner than the printer's minimum printable wall thickness. Thin walls either fail to print entirely or collapse during printing.</p>
+
+          <h4>How the analysis works</h4>
+          <p>For each face, a ray is cast from the face's centre point in the direction of the inverted face normal (i.e., inward through the mesh). The distance to the first opposing surface it hits is recorded as the local wall thickness at that face.</p>
+
+          <h4>Thickness Threshold</h4>
+          <p>The minimum acceptable wall thickness in mm. Auto-populated from the printer preset's <em>Min Wall Thickness</em> value. Adjust manually for your specific filament or print settings.</p>
+
+          <h4>Results</h4>
+          <ul class="doc-list">
+            <li>Number of faces below the threshold</li>
+            <li>Minimum thickness found (thinnest wall in the mesh)</li>
+            <li>Maximum thickness found</li>
+          </ul>
+
+          <h4>Thickness Overlay</h4>
+          <p>Applies a vertex colour attribute (<code>PrintReady_Thickness</code>) to the mesh and enables it in the viewport. Requires <strong>Solid shading</strong> with <strong>Color: Attribute</strong> enabled in Viewport Shading options.</p>
+
+          <div class="heatmap-legend">
+            <div class="heatmap-swatch"><div class="swatch" style="background:#ef4444"></div> Red — below threshold</div>
+            <div class="heatmap-swatch"><div class="swatch" style="background:#f59e0b"></div> Yellow — up to 2× threshold</div>
+            <div class="heatmap-swatch"><div class="swatch" style="background:#22c55e"></div> Green — acceptable</div>
+          </div>
+
+          <h4>Select Thin Faces</h4>
+          <p>Enters Edit Mode and selects all faces whose measured thickness is below the threshold. Use this to manually thicken those areas with the Solidify modifier, Shrink/Fatten (Alt+S), or manual modelling.</p>
+
+          <div class="callout limit">
+            <span class="callout-icon">⚠</span>
+            <div class="callout-body">
+              <strong>Limitations:</strong> The ray-cast only reaches surfaces visible from the outside. Internal cavities, hollow channels, and mesh features that are only accessible from the inside will not be measured. Run mesh health checks first — non-manifold geometry can cause incorrect ray-cast results.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div id="usage-step5">
+          <h3>Step 5 — Overhang Detection</h3>
+          <p>Identifies faces that overhang at an angle steeper than the printer can bridge without support material. FDM printers typically handle up to 45–50°; resin printers vary more widely.</p>
+
+          <h4>Overhang Angle</h4>
+          <p>The threshold angle in degrees (0–90, default 45). Faces whose outward normal points more than this angle below horizontal are classified as overhangs. A value of 45° means any face steeper than 45° from the horizontal plane requires supports.</p>
+
+          <h4>Overhang Overlay</h4>
+          <p>Applies a <code>PrintReady_Overhang</code> vertex colour attribute. Requires Solid shading with Color: Attribute.</p>
+
+          <div class="heatmap-legend">
+            <div class="heatmap-swatch"><div class="swatch" style="background:#22c55e"></div> Green — safe (no overhang)</div>
+            <div class="heatmap-swatch"><div class="swatch" style="background:#f59e0b"></div> Yellow — mild overhang</div>
+            <div class="heatmap-swatch"><div class="swatch" style="background:#ef4444"></div> Red — severe overhang</div>
+            <div class="heatmap-swatch"><div class="swatch" style="background:#3b82f6"></div> Blue — build plate face (bottom)</div>
+          </div>
+
+          <h4>Suggest Best Orientation</h4>
+          <p>Tests six candidate rotations of the object and reports which one produces the fewest overhang faces, along with the percentage improvement over the current orientation:</p>
+          <pre><code>Rotations tested (degrees):
+  Current (0, 0, 0)
+  Rotate X +90  →  front face down
+  Rotate X −90  →  back face down
+  Rotate Y +90  →  right face down
+  Rotate Y −90  →  left face down
+  Rotate Z +90  →  side orientation</code></pre>
+
+          <div class="callout info">
+            <span class="callout-icon">ℹ</span>
+            <div class="callout-body">The suggestion is a hint — apply the rotation manually using <strong>R → X/Y/Z → 90</strong> in the viewport if you want to accept it. The operator does not rotate the object automatically.</div>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div id="usage-step6">
+          <h3>Step 6 — Model Splitter</h3>
+          <p>Splits a model that is too large for the printer's build volume into multiple pieces. Each piece has flat, capped faces at the cut plane so the parts can be glued or fastened together after printing.</p>
+
+          <div class="img-placeholder">
+            <div class="img-placeholder-inner">
+              <div class="img-placeholder-icon">📷</div>
+              <div class="img-placeholder-label">Add screenshot: ../images/docs-step6.jpg<br>Suggested: Large model with build volume wireframe and red cut planes visible</div>
+            </div>
+          </div>
+
+          <h4>Split Mode</h4>
+          <p>The primary choice that determines how cuts are defined:</p>
+          <ul class="doc-list">
+            <li><strong>AUTO</strong> (default) — automatically detects which axes overflow the build volume and calculates the minimum cuts needed. Choose a split axis (X / Y / Z / Auto) and a piece count.</li>
+            <li><strong>MANUAL</strong> — define each cut independently. For every cut you set its axis (X, Y, or Z), its position along the object, and an optional tilt angle. This lets you mix axes freely — e.g. one cut on X and another on Z.</li>
+          </ul>
+
+          <h4>AUTO Mode</h4>
+          <p>Select <strong>Split Axis</strong> (X / Y / Z, or Auto to detect automatically) and <strong>Pieces</strong> (2–10). The extension calculates evenly-spaced cuts along each overflowing axis.</p>
+
+          <h4>MANUAL Mode</h4>
+          <p>Set <strong>Pieces</strong> to control how many cut controls appear (n pieces = n−1 cuts). For each cut:</p>
+          <ul class="doc-list">
+            <li><strong>Axis</strong> — which world axis this specific cut is perpendicular to (X, Y, or Z)</li>
+            <li><strong>Position</strong> — slider from 0% to 100% of the object's extent along the chosen axis, with a live millimetre readout</li>
+            <li><strong>Tilt (°)</strong> — tilts the cut plane up to ±85° away from perpendicular</li>
+          </ul>
+          <p>Increasing the piece count only resets newly-added cut slots — existing configurations are preserved.</p>
+
+          <h4>Validate Cuts</h4>
+          <p>Available in MANUAL mode. Checks that every piece produced by the current cut settings fits within the build volume. Cuts on different axes are validated independently per axis — a cut on X does not constrain Y or Z spans.</p>
+          <p>If any span exceeds the build volume, a red error box appears in the panel identifying the exact gap (e.g. "X axis — gap between Cut 2 and Cut 3: 245.0 mm exceeds build volume 220 mm"). Fix the offending slider and click Validate again.</p>
+
+          <h4>Preview Cuts</h4>
+          <p>Toggles a GPU viewport overlay showing the build volume (orange wireframe) and cut planes (red translucent quads) directly in the 3D viewport. No objects are created in the Outliner. The overlay updates live as you move position or tilt sliders — no re-click required. Click the button again to hide the overlay.</p>
+
+          <h4>Split Model</h4>
+          <p>Triggers a confirmation dialog, then:</p>
+          <ol class="doc-list">
+            <li>Creates copies of the original mesh, one per piece</li>
+            <li>Bisects each copy using <code>bmesh.ops.bisect_plane</code></li>
+            <li>Fills the open cut edges using <code>edgeloop_fill</code> (falls back to <code>triangle_fill</code> for complex shapes)</li>
+            <li>Removes duplicate vertices and recalculates normals</li>
+            <li>Places all parts in a <strong>"Print Ready Parts"</strong> collection</li>
+            <li>Hides the original object (preserved for Undo Split)</li>
+          </ol>
+
+          <h4>Undo Split</h4>
+          <p>Removes all objects from "Print Ready Parts", deletes the collection, and restores the original object's visibility.</p>
+
+          <div class="callout limit">
+            <span class="callout-icon">⚠</span>
+            <div class="callout-body">
+              <strong>Limitations:</strong><br>
+              — Interlocking connectors or alignment pins are <strong>not generated</strong> (planned for v2).<br>
+              — Very thin geometry at the cut plane may produce open edges after bisection. If this happens, run <strong>Fix Non-Manifold</strong> on the affected part.<br>
+              — Complex meshes with internal structures may require manual inspection after splitting.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div id="usage-step7">
+          <h3>Step 7 — Export</h3>
+          <p>Exports the prepared model (or split parts) to a slicer-ready file format.</p>
+
+          <h4>Formats</h4>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Format</th><th>Best for</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td>STL</td><td>General compatibility</td><td>Universally supported by all slicers. Binary output. Most widely used.</td></tr>
+                <tr><td>3MF</td><td>Modern slicers</td><td>Preserves more metadata. Smaller file size. Supported by PrusaSlicer, BambuStudio, Orca.</td></tr>
+                <tr><td>OBJ</td><td>Broad compatibility</td><td>Supported by most 3D tools. Larger file size than STL for print use.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Export Directory</h4>
+          <p>The folder where files will be saved. If left empty and the .blend file is saved, the directory defaults to the same folder as the .blend file.</p>
+
+          <h4>Apply Modifiers</h4>
+          <p>When enabled (default), all modifiers on the mesh are baked into the exported geometry. Disable only if you want to export the base mesh without modifier effects.</p>
+
+          <h4>File Name Prefix</h4>
+          <p>Text prepended to every exported file name. Default: <code>print_</code>. Example output: <code>print_MyObject.stl</code>.</p>
+
+          <h4>Export for Printing</h4>
+          <p>Smart export: if the model has been split, exports every object in the "Print Ready Parts" collection as a separate file. Otherwise exports the active mesh object.</p>
+
+          <h4>Quick Export (STL)</h4>
+          <p>One-click export as STL to the same folder as the .blend file. The button is greyed out if the .blend file has not been saved yet.</p>
+
+          <h4>Scale correction</h4>
+          <p>The exporter applies a scale factor of <code>unit_scale × 1000</code>. With the recommended scene setup (unit_scale = 0.001), this results in a scale factor of <code>1.0</code> — the file is exported at true millimetre size without any re-scaling.</p>
+
+          <div class="callout tip">
+            <span class="callout-icon">✓</span>
+            <div class="callout-body">After export, verify the file dimensions in your slicer match the expected measurements. If the model appears 1000× too large or too small, the scene units were not configured correctly — run <strong>Fix Scale to Millimeters</strong> first and re-export.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ OPERATORS ═══ -->
+      <section class="doc-section" id="operators">
+        <h2><span class="sec-num">6</span> Operators</h2>
+        <p>All 23 operators are listed below with their Python identifiers, descriptions, and activation requirements. All operators require an active mesh object unless noted as "—".</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Operator</th>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Prerequisites</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Validate Scale</td>
+                <td><code>printready.validate_scale</code></td>
+                <td>Check scene unit system, unit_scale, and object transform for print compatibility.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix Scale to Millimeters</td>
+                <td><code>printready.fix_scale</code></td>
+                <td>Set scene to Metric + unit_scale 0.001, apply object scale. Supports undo.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Run All Checks</td>
+                <td><code>printready.run_health_checks</code></td>
+                <td>Run all five mesh health checks in a single bmesh session. Stores counts in scene properties.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix Non-Manifold</td>
+                <td><code>printready.fix_non_manifold</code></td>
+                <td>Dissolve degenerate edges + attempt to fill boundary holes (up to 4 sides). Re-runs health check on completion.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix Normals</td>
+                <td><code>printready.fix_normals</code></td>
+                <td>Recalculate all face normals outward-facing. Re-runs health check on completion.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix Zero Faces</td>
+                <td><code>printready.fix_zero_faces</code></td>
+                <td>Delete faces with area &lt; 1×10⁻⁸. Re-runs health check on completion.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix Loose Vertices</td>
+                <td><code>printready.fix_loose_verts</code></td>
+                <td>Delete vertices with no connected edges. Re-runs health check on completion.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Fix All Issues</td>
+                <td><code>printready.fix_all_issues</code></td>
+                <td>Runs all four fixable repairs in the recommended order (loose verts → zero faces → normals → non-manifold). Supports undo.</td>
+                <td>Active mesh; no shape keys; single-user mesh data</td>
+              </tr>
+              <tr>
+                <td>Analyze Thickness</td>
+                <td><code>printready.analyze_thickness</code></td>
+                <td>BVHTree ray-cast from each face centre along −normal to measure local wall thickness.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Toggle Thickness Overlay</td>
+                <td><code>printready.toggle_thickness_overlay</code></td>
+                <td>Show or hide the red/yellow/green thickness heatmap vertex colour attribute.</td>
+                <td>Thickness analysis must have been run</td>
+              </tr>
+              <tr>
+                <td>Select Thin Faces</td>
+                <td><code>printready.select_thin_faces</code></td>
+                <td>Enter Edit Mode and select all faces below the thickness threshold.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Detect Overhangs</td>
+                <td><code>printready.detect_overhangs</code></td>
+                <td>Classify faces as overhanging based on world-space normal angle vs the overhang threshold.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Toggle Overhang Overlay</td>
+                <td><code>printready.toggle_overhang_overlay</code></td>
+                <td>Show or hide the green/yellow/red/blue overhang heatmap vertex colour attribute.</td>
+                <td>Overhang detection must have been run</td>
+              </tr>
+              <tr>
+                <td>Select Overhang Faces</td>
+                <td><code>printready.select_overhangs</code></td>
+                <td>Enter Edit Mode and select all overhang faces.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Suggest Best Orientation</td>
+                <td><code>printready.suggest_orientation</code></td>
+                <td>Test six candidate rotations and report the one that minimises overhang face count.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Toggle Build Volume</td>
+                <td><code>printready.toggle_build_volume</code></td>
+                <td>Toggle the GPU viewport overlay showing the printer's build volume and cut planes. Also callable via the Preview Cuts button.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Preview Cuts</td>
+                <td><code>printready.preview_cuts</code></td>
+                <td>Toggle the GPU viewport overlay showing the build volume (orange wireframe) and cut planes (red quads) in real time. Updates live as cut settings change.</td>
+                <td>Active mesh</td>
+              </tr>
+              <tr>
+                <td>Validate Cuts</td>
+                <td><code>printready.validate_cuts</code></td>
+                <td>Check that every piece produced by the current manual cut settings fits within the build volume. Reports the exact gap and cuts involved for any violation.</td>
+                <td>Active mesh; Manual mode</td>
+              </tr>
+              <tr>
+                <td>Split Model</td>
+                <td><code>printready.split_model</code></td>
+                <td>Bisect model into pieces using bisect_plane + fill. Requires confirmation. Supports undo.</td>
+                <td>Active mesh (confirmation dialog shown)</td>
+              </tr>
+              <tr>
+                <td>Undo Split</td>
+                <td><code>printready.undo_split</code></td>
+                <td>Delete all parts in "Print Ready Parts" collection and restore the original hidden object.</td>
+                <td>Model must currently be split</td>
+              </tr>
+              <tr>
+                <td>Export for Printing</td>
+                <td><code>printready.export</code></td>
+                <td>Export active object or all split parts to the configured format and directory.</td>
+                <td>Active mesh; export path set (or .blend file saved)</td>
+              </tr>
+              <tr>
+                <td>Quick Export (STL)</td>
+                <td><code>printready.quick_export</code></td>
+                <td>Export as STL to the same directory as the current .blend file.</td>
+                <td>Active mesh; .blend file must be saved</td>
+              </tr>
+              <tr>
+                <td>Clean Up Print Ready Data</td>
+                <td><code>printready.cleanup</code></td>
+                <td>Remove thickness and overhang vertex colour attributes and reset all overlay flags. Supports undo.</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ PARAMETERS ═══ -->
+      <section class="doc-section" id="parameters">
+        <h2><span class="sec-num">7</span> Parameters</h2>
+        <p>All parameters are stored on <code>scene.print_ready</code> (a <code>PrintReadySettings</code> PropertyGroup). Values persist per-scene for the lifetime of the .blend file.</p>
+
+        <h3>Printer Profile</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Range</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>printer_preset</td><td>Enum</td><td>(first preset)</td><td>13 options + Custom</td><td>Select a printer; triggers auto-fill of all profile fields</td></tr>
+              <tr><td>printer_type</td><td>Enum</td><td>FDM</td><td>FDM / RESIN</td><td>Printer technology; affects min wall thickness recommendations</td></tr>
+              <tr><td>build_volume_x</td><td>Float (mm)</td><td>256.0</td><td>1.0 – 2000.0</td><td>Printer build area width</td></tr>
+              <tr><td>build_volume_y</td><td>Float (mm)</td><td>256.0</td><td>1.0 – 2000.0</td><td>Printer build area depth</td></tr>
+              <tr><td>build_volume_z</td><td>Float (mm)</td><td>256.0</td><td>1.0 – 2000.0</td><td>Printer build area height</td></tr>
+              <tr><td>nozzle_diameter</td><td>Float (mm)</td><td>0.4</td><td>0.1 – 2.0</td><td>FDM nozzle diameter; informational reference</td></tr>
+              <tr><td>min_wall_thickness</td><td>Float (mm)</td><td>0.8</td><td>0.1 – 10.0</td><td>Minimum printable wall for this printer; seeds thickness_threshold</td></tr>
+              <tr><td>layer_height</td><td>Float (mm)</td><td>0.2</td><td>0.01 – 1.0</td><td>Default layer height; informational reference</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Scale &amp; Units</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Options</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>target_unit</td><td>Enum</td><td>MILLIMETERS</td><td>MILLIMETERS / CENTIMETERS / INCHES</td><td>Unit for displaying object dimensions in the panel</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Wall Thickness</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Range</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>thickness_threshold</td><td>Float (mm)</td><td>0.8</td><td>0.01 – 10.0</td><td>Minimum acceptable wall thickness; auto-set from preset's min_wall_thickness</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Overhang</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Range</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>overhang_angle</td><td>Float (degrees)</td><td>45.0</td><td>0.0 – 90.0</td><td>Threshold angle from horizontal; faces steeper than this value are flagged as overhangs</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Model Splitter</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Range / Options</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>split_mode</td><td>Enum</td><td>AUTO</td><td>AUTO / MANUAL</td><td>Whether cuts are calculated automatically or set manually per-cut</td></tr>
+              <tr><td>split_axis</td><td>Enum</td><td>AUTO</td><td>X / Y / Z / AUTO</td><td>Axis to split along (AUTO mode only); AUTO detects overflowing axes automatically</td></tr>
+              <tr><td>split_count</td><td>Int</td><td>2</td><td>2 – 10</td><td>Number of pieces; in MANUAL mode, determines how many cut controls appear</td></tr>
+              <tr><td>cut_axis_1–9</td><td>Enum</td><td>X</td><td>X / Y / Z</td><td>Per-cut axis (MANUAL mode); each cut can use a different axis</td></tr>
+              <tr><td>cut_pos_1–9</td><td>Float</td><td>varies</td><td>0.01 – 0.99</td><td>Per-cut position as a fraction of the object's extent along that cut's axis</td></tr>
+              <tr><td>cut_rot_1–9</td><td>Float</td><td>0.0</td><td>−85.0 – 85.0</td><td>Per-cut tilt angle in degrees; tilts the cut plane away from perpendicular</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Export</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Type</th><th>Default</th><th>Options</th><th>Description</th></tr></thead>
+            <tbody>
+              <tr><td>export_format</td><td>Enum</td><td>STL</td><td>STL / 3MF / OBJ</td><td>Output file format</td></tr>
+              <tr><td>export_path</td><td>String (dir)</td><td>""</td><td>Any directory path</td><td>Destination folder; defaults to .blend file directory if empty</td></tr>
+              <tr><td>export_apply_modifiers</td><td>Bool</td><td>True</td><td>—</td><td>Bake all modifiers into exported geometry</td></tr>
+              <tr><td>export_name_prefix</td><td>String</td><td>"print_"</td><td>Any string</td><td>Prefix for exported file names (e.g. <code>print_MyObject.stl</code>)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ WORKFLOW ═══ -->
+      <section class="doc-section" id="workflow">
+        <h2><span class="sec-num">8</span> Workflow</h2>
+        <p>The recommended end-to-end workflow for preparing a model for printing. Steps 4–6 are optional depending on your print requirements.</p>
+
+        <div class="workflow-list">
+          <div class="workflow-item">
+            <div class="workflow-step">1</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Select your mesh object</div>
+              <div class="workflow-item-desc">Click the mesh in the viewport or outliner. All operators operate on the active object.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">2</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 1 — Pick a printer preset</div>
+              <div class="workflow-item-desc">Select from the dropdown. All dimensional values auto-fill including the thickness threshold.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">3</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 2 — Validate &amp; fix scale</div>
+              <div class="workflow-item-desc">Click Validate Scale. If any warnings appear, click Fix Scale to Millimeters. Check that object dimensions read correctly.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">4</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 3 — Check and fix mesh health</div>
+              <div class="workflow-item-desc">Click Run All Checks. If issues are found, click Fix All Issues (or fix individually). Re-run checks until the status reads "Mesh is healthy".</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">5</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 4 — Analyze wall thickness <span class="tag tag-yellow" style="font-size:10px;vertical-align:middle;">optional</span></div>
+              <div class="workflow-item-desc">Click Analyze Thickness. Toggle the overlay to inspect thin areas. Use Select Thin Faces + Edit Mode to thicken if needed.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">6</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 5 — Check overhangs <span class="tag tag-yellow" style="font-size:10px;vertical-align:middle;">optional</span></div>
+              <div class="workflow-item-desc">Click Detect Overhangs. If the overhang count is high, try Suggest Best Orientation or plan to add supports in your slicer.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">7</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 6 — Split if needed <span class="tag tag-yellow" style="font-size:10px;vertical-align:middle;">optional</span></div>
+              <div class="workflow-item-desc">If the model overflows the build volume (shown in Step 2), choose AUTO or MANUAL split mode, optionally click Validate Cuts to confirm all pieces fit, then click Split Model. Parts are placed in the "Print Ready Parts" collection.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">8</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Step 7 — Export</div>
+              <div class="workflow-item-desc">Set export directory and format, then click Export for Printing. Verify dimensions in your slicer before slicing.</div>
+            </div>
+          </div>
+          <div class="workflow-item">
+            <div class="workflow-step">9</div>
+            <div class="workflow-item-body">
+              <div class="workflow-item-title">Clean Up <span class="tag tag-yellow" style="font-size:10px;vertical-align:middle;">optional</span></div>
+              <div class="workflow-item-desc">If needed, click Clean Up Print Ready Data to remove thickness/overhang colour attributes and reset overlay flags.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ TROUBLESHOOTING ═══ -->
+      <section class="doc-section" id="troubleshooting">
+        <h2><span class="sec-num">9</span> Troubleshooting</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Symptom</th><th>Cause</th><th>Solution</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>"Mesh has multiple users"</td>
+                <td>The mesh data-block is shared between multiple objects (linked copies)</td>
+                <td>Select the object → press <kbd>U</kbd> in the Properties panel → <em>Make Single User → Object &amp; Data</em>, then retry.</td>
+              </tr>
+              <tr>
+                <td>"Cannot change topology on mesh with shape keys"</td>
+                <td>Shape keys are present; topology-changing operations would corrupt them</td>
+                <td>Delete shape keys in Properties → Object Data → Shape Keys, or bake them to the basis shape first.</td>
+              </tr>
+              <tr>
+                <td>Thickness overlay not visible after toggle</td>
+                <td>Vertex colour attributes are not displayed in the current shading mode</td>
+                <td>Switch viewport shading to <strong>Solid</strong>, then in the Viewport Shading popover (top-right sphere icon) set <strong>Color → Attribute</strong>. Also ensure analysis has been run first.</td>
+              </tr>
+              <tr>
+                <td>Overhang overlay not visible after toggle</td>
+                <td>Same as thickness overlay — shading mode or analysis not run</td>
+                <td>Run Detect Overhangs first, then enable Solid shading with Color: Attribute.</td>
+              </tr>
+              <tr>
+                <td>Quick Export (STL) is greyed out</td>
+                <td>The .blend file has not been saved yet</td>
+                <td>Save the file (<kbd>Ctrl+S</kbd>) and the button will become active. Alternatively, use the full Export panel and set a directory manually.</td>
+              </tr>
+              <tr>
+                <td>Export fails: "Set an export directory or save the .blend file first"</td>
+                <td>No export path is configured and no .blend file path is available</td>
+                <td>Either save the .blend file, or expand Step 7 and type a path into the <em>Export Directory</em> field.</td>
+              </tr>
+              <tr>
+                <td>Self-intersections remain after Fix All</td>
+                <td>Auto-fix for self-intersections is not implemented</td>
+                <td>Fix manually: add a <strong>Boolean → Union</strong> modifier (Object mode) to merge intersecting regions, or use sculpt tools. Then re-run health checks.</td>
+              </tr>
+              <tr>
+                <td>Split produces open edges on a piece</td>
+                <td>Very thin or degenerate geometry at the cut plane cannot be filled cleanly</td>
+                <td>Run <strong>Fix Non-Manifold</strong> on the affected part. If the problem persists, move the cut position slightly by adjusting build volume size or model placement before splitting.</td>
+              </tr>
+              <tr>
+                <td>Model appears 1000× too large or too small in slicer</td>
+                <td>Scene units were not correct at export time</td>
+                <td>Run <strong>Fix Scale to Millimeters</strong> (Step 2), then re-export. Verify: 1 Blender Unit should equal 1 mm in scene settings.</td>
+              </tr>
+              <tr>
+                <td>Build volume preview does not match expected printer size</td>
+                <td>Build volume values in the printer profile do not match</td>
+                <td>In Step 1, re-select the correct printer preset or manually correct <em>Build Volume X/Y/Z</em>. Then re-toggle the preview.</td>
+              </tr>
+              <tr>
+                <td>Thickness analysis warns about mesh health issues</td>
+                <td>Non-manifold geometry or self-intersections affect ray-cast accuracy</td>
+                <td>Complete Step 3 (Mesh Health) first to resolve non-manifold edges before running thickness analysis.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ FAQ ═══ -->
+      <section class="doc-section" id="faq">
+        <h2><span class="sec-num">10</span> FAQ</h2>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q">Does it work with Blender 4.2 or earlier?</div>
+            <div class="faq-a">No. The extension uses Blender's new Extension system introduced in Blender 4.2 and fully supported from 4.5 onward. The <code>blender_manifest.toml</code> file and extension API are not available in older versions. Minimum requirement: <strong>Blender 4.5</strong>.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I use it on NURBS surfaces, curves, or other object types?</div>
+            <div class="faq-a">No. All operators require a <strong>mesh object</strong> as the active object. NURBS, curves, metaballs, and other types are not supported. Convert your object to a mesh first using <em>Object → Convert → Mesh</em>.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I analyse multiple objects at once?</div>
+            <div class="faq-a">No. The extension operates on the <strong>active object only</strong>. To analyse multiple objects, run each step on each object individually by switching the active selection.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Where are the split parts saved?</div>
+            <div class="faq-a">Split parts are stored as Blender objects inside a <strong>"Print Ready Parts"</strong> collection in the scene. They are not exported automatically — you must run the Export step to save them to disk. The original object is hidden but preserved until you use <em>Undo Split</em>.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I export a model that has not been split?</div>
+            <div class="faq-a">Yes. If no split has been performed, Export for Printing exports the <strong>active mesh object</strong> directly. The "Print Ready Parts" collection only affects export when it exists and contains objects.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Will the extension add connectors or interlocking pins to split parts?</div>
+            <div class="faq-a">Not in v1.0. Interlocking key connectors and alignment pins are <strong>planned for v2</strong>. Currently split faces are flat — you can add connectors manually or via Blender's Boolean tools after splitting.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Does Fix All fix self-intersections?</div>
+            <div class="faq-a">No. Self-intersections are <strong>detected and reported</strong> but not automatically repaired. They require manual geometry editing because automatic resolution would require destructive Boolean operations that may alter the intended shape. Use a Boolean → Union modifier or sculpt tools.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Do the heatmap overlays require a specific viewport shading mode?</div>
+            <div class="faq-a">Yes. Both the thickness and overhang overlays use Blender's <strong>Vertex Color Attributes</strong> system. To see them: set viewport shading to <strong>Solid</strong>, then open the shading popover (the sphere icon in the top-right of the viewport) and set <strong>Color → Attribute</strong>.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Will scene settings be permanently changed by Fix Scale?</div>
+            <div class="faq-a">Yes — Fix Scale modifies the scene's <strong>Unit System</strong>, <strong>Unit Scale</strong>, and the <strong>object's scale transform</strong>. These are real changes to the .blend file. The operation supports undo (<kbd>Ctrl+Z</kbd>).</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Can I use a printer not in the preset list?</div>
+            <div class="faq-a">Yes. Select <strong>Custom</strong> from the printer preset dropdown. All fields (build volume, nozzle diameter, wall thickness, layer height) become fully editable. Enter your printer's specs manually.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ════════════════════════════════ TECHNICAL ═══ -->
+      <section class="doc-section" id="technical">
+        <h2><span class="sec-num">11</span> Technical Details</h2>
+
+        <h3>Architecture</h3>
+        <p>The extension is structured as a standard Blender 4.5+ Extension package with a <code>blender_manifest.toml</code> configuration file. All code is pure Python — no external packages, no compiled extensions.</p>
+        <pre><code>print_ready/
+  blender_manifest.toml   ← Extension manifest
+  __init__.py             ← Entry point (register/unregister)
+  core/
+    printer_profiles.py   ← JSON preset loader
+    scale_validator.py    ← Unit and transform checks
+    mesh_health.py        ← bmesh analysis and repair
+    wall_thickness.py     ← BVHTree ray-cast analysis
+    overhang_detector.py  ← Face normal angle analysis
+    model_splitter.py     ← Bisect-based splitting
+    exporter.py           ← STL/3MF/OBJ export
+  ui/
+    properties.py         ← PrintReadySettings PropertyGroup
+    operators.py          ← 23 operators
+    panels.py             ← 8 N-panel sub-panels
+  data/
+    printer_presets.json  ← 13 printer preset definitions</code></pre>
+
+        <h3>Unit convention</h3>
+        <p>The extension assumes and enforces the convention that <strong>1 Blender Unit = 1 millimetre</strong>, achieved by setting the scene's <code>unit_scale = 0.001</code>. All internal mm calculations use:</p>
+        <pre><code>mm = obj.dimensions[axis] * scene.unit_scale * 1000</code></pre>
+        <p>The export scale factor is <code>unit_scale × 1000.0 = 1.0</code>, meaning files are exported at true millimetre scale with no rescaling needed.</p>
+
+        <h3>Mesh operations</h3>
+        <p>All mesh analysis and repair uses Blender's <strong>bmesh</strong> module. Every bmesh session is wrapped in a <code>try/finally: bm.free()</code> block to prevent memory leaks. The extension never leaves a bmesh instance open on error.</p>
+
+        <h3>Wall thickness algorithm</h3>
+        <p>For each face in the mesh:</p>
+        <ol class="doc-list">
+          <li>The face's world-space centre point and inverted normal direction are computed</li>
+          <li>A ray is cast from that point in the <code>-normal</code> direction using <code>BVHTree.ray_cast()</code></li>
+          <li>The distance to the first hit is recorded as the local wall thickness</li>
+          <li>Faces with no hit (boundary faces, outer shells) receive a thickness of 0</li>
+        </ol>
+
+        <h3>Self-intersection detection</h3>
+        <p>Uses <code>BVHTree.overlap(tree)</code> to find all intersecting face pairs, then filters out:</p>
+        <ul class="doc-list">
+          <li>Self-pairs <code>(a == b)</code></li>
+          <li>Duplicate pairs <code>(a &gt; b)</code></li>
+          <li>Adjacent face pairs (faces sharing an edge) — these overlap by design at their shared boundary</li>
+        </ul>
+
+        <h3>Overhang algorithm</h3>
+        <p>For each face, the world-space normal is compared to the downward direction <code>(0, 0, -1)</code> using a dot product. The angle from horizontal is derived from the dot product result. Faces where this angle exceeds the threshold are classified as overhangs.</p>
+
+        <h3>Model splitting algorithm</h3>
+        <p>Each cut uses the following sequence:</p>
+        <ol class="doc-list">
+          <li><code>bmesh.ops.bisect_plane</code> — cuts the mesh at the specified plane</li>
+          <li><code>bmesh.ops.edgeloop_fill</code> — fills the open edge loop created by the cut (fallback: <code>triangle_fill</code> for complex loops)</li>
+          <li><code>bmesh.ops.remove_doubles</code> — merges any duplicate vertices at the cut</li>
+          <li><code>bmesh.ops.recalc_face_normals</code> — ensures outward-facing normals on the new cap face</li>
+        </ol>
+
+        <h3>Vertex colour attributes</h3>
+        <ul class="doc-list">
+          <li>Name: <code>PrintReady_Thickness</code> and <code>PrintReady_Overhang</code></li>
+          <li>Type: <code>FLOAT_COLOR</code>, domain: <code>CORNER</code> (per-face-corner storage)</li>
+          <li>Removable via Properties → Object Data → Color Attributes, or via the Clean Up operator</li>
+        </ul>
+
+        <h3>Viewport overlay (GPU draw handler)</h3>
+        <p>Build volume and cut plane previews are rendered using a <code>SpaceView3D</code> GPU draw callback registered via <code>draw_handler_add</code>. The callback runs on every viewport redraw, reads live settings from <code>scene.print_ready</code>, and draws using <code>gpu.shader.from_builtin('UNIFORM_COLOR')</code> and <code>batch_for_shader()</code>. No scene objects are created. The handler is registered by <code>enable_overlay()</code> and removed by <code>disable_overlay()</code> in <code>model_splitter.py</code>.</p>
+        <p>A <code>bpy.app.handlers.load_post</code> handler in <code>__init__.py</code> resets <code>split_show_preview = False</code> and calls <code>disable_overlay()</code> on file load, preventing stale overlay state after reopening a .blend file.</p>
+        <ul class="doc-list">
+          <li><strong>Print Ready Parts</strong> — collection holding post-split mesh objects</li>
+        </ul>
+
+        <h3>Properties location</h3>
+        <p>All settings are stored on the Blender Scene object:</p>
+        <pre><code>bpy.context.scene.print_ready  # → PrintReadySettings</code></pre>
+        <p>They persist per-scene within the .blend file. Opening a new file resets all values to defaults.</p>
+      </section>
+
+    </div><!-- .content -->
+  </main><!-- .main -->
+</div><!-- .page-wrap -->
+
+
+<!-- ════════════════════════════════════════════ FOOTER ═══ -->
+<footer>
+  <p>
+    3DQuads Print Ready &nbsp;·&nbsp; Documentation v1.0.0 &nbsp;·&nbsp; Blender 4.5+ Extension &nbsp;·&nbsp;
+    Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPL-3.0</a>
+    &nbsp;·&nbsp; By <a href="#">3DQuads</a>
+  </p>
+</footer>
+
+</body>
+</html>
