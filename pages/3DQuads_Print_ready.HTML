@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3DQuads Print Ready — Complete 3D Print Preparation for Blender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d14;
+      --bg-card:   #13131f;
+      --bg-card2:  #16162a;
+      --border:    #1e1e38;
+      --accent:    #7c3aed;
+      --accent2:   #a855f7;
+      --accent3:   #c084fc;
+      --text:      #ffffff;
+      --text-muted:#c4c4d4;
+      --text-dim:  #7a7a9a;
+      --green:     #22c55e;
+      --red:       #ef4444;
+      --yellow:    #f59e0b;
+      --radius:    12px;
+      --radius-lg: 20px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Utility ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent3); background: rgba(124,58,237,.15);
+      border: 1px solid rgba(124,58,237,.3); border-radius: 100px;
+      padding: 4px 12px;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #a855f7, #7c3aed, #c084fc);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── Image placeholder ── */
+    .img-placeholder {
+      position: relative; width: 100%; padding-top: 56.25%; /* 16:9 */
+      background: var(--bg-card2);
+      border: 2px dashed rgba(124,58,237,.4);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .img-placeholder-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; padding: 16px; text-align: center;
+    }
+    .img-placeholder-icon { font-size: 32px; opacity: .6; }
+    .img-placeholder-label { font-size: 13px; color: var(--text-dim); font-family: monospace; }
+
+    /* When real image is placed, swap the div for: <img src="../images/xxx.jpg" ...> */
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      padding: 14px 28px; border-radius: var(--radius);
+      cursor: pointer; transition: transform .15s, box-shadow .15s;
+      border: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 24px rgba(124,58,237,.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(168,85,247,.55); }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent3);
+      border: 2px solid rgba(124,58,237,.5);
+    }
+    .btn-outline:hover { border-color: var(--accent2); background: rgba(124,58,237,.08); }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative; padding: 120px 0 80px;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,.22) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237c3aed' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 1;
+    }
+    .hero-content { position: relative; z-index: 1; text-align: center; max-width: 780px; margin: 0 auto; }
+    .hero-eyebrow { margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -.02em; }
+    .hero-sub { font-size: 18px; color: var(--text-muted); max-width: 560px; margin: 0 auto 36px; }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-badge {
+      margin-top: 56px;
+      display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+    }
+    .hero-badge-item { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; }
+    .hero-badge-item span { color: var(--accent3); font-weight: 700; }
+
+    .hero-creator {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 20px; color: var(--text-muted); font-size: 14px;
+    }
+    .avatar-placeholder {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 2px dashed rgba(124,58,237,.5);
+      background: var(--bg-card2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0; overflow: hidden;
+    }
+    .hero-creator strong { color: var(--text); }
+
+    .hero-image-wrap { margin-top: 60px; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero-image-wrap .img-placeholder { border-radius: var(--radius-lg); }
+
+    /* ── Section base ── */
+    section { padding: 80px 0; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-header h2 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; letter-spacing: -.02em; margin-top: 12px; }
+    .section-header p { color: var(--text-muted); font-size: 17px; max-width: 560px; margin: 12px auto 0; }
+
+    /* ── Problem ── */
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px;
+    }
+    .problem-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .problem-icon { font-size: 28px; margin-bottom: 12px; }
+    .problem-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .problem-card p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+    /* ── Features ── */
+    .feature {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 56px; align-items: center; padding: 64px 0;
+    }
+    .feature + .feature { border-top: 1px solid var(--border); }
+    .feature.reverse .feature-image { order: -1; }
+    @media (max-width: 768px) {
+      .feature { grid-template-columns: 1fr; gap: 32px; }
+      .feature.reverse .feature-image { order: 0; }
+    }
+    .feature-step {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .step-badge {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .step-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--accent3); }
+    .feature-body h3 { font-size: clamp(22px, 3vw, 28px); font-weight: 800; line-height: 1.2; margin-bottom: 14px; letter-spacing: -.01em; }
+    .feature-body p { color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+    .feature-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-bullets li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-muted);
+    }
+    .feature-bullets li::before {
+      content: ''; flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent2); margin-top: 7px;
+    }
+    .feature-bullets li strong { color: var(--text); }
+
+    /* ── Comparison ── */
+    .comparison-wrap { overflow-x: auto; }
+    .comparison-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+    .comparison-table thead th {
+      padding: 14px 20px; text-align: left; font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table thead th:nth-child(2) { color: var(--accent3); }
+    .comparison-table tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+    .comparison-table tbody tr:hover { background: rgba(124,58,237,.05); }
+    .comparison-table tbody td { padding: 14px 20px; font-size: 14px; color: var(--text-muted); }
+    .comparison-table tbody td:first-child { color: var(--text); font-weight: 500; }
+    .check-yes { color: var(--green); font-size: 18px; font-weight: 800; }
+    .check-no  { color: var(--red);   font-size: 18px; font-weight: 800; }
+    .check-partial { color: var(--yellow); font-size: 14px; font-weight: 600; }
+    .comparison-highlight { background: rgba(124,58,237,.06) !important; }
+    .col-printready { background: rgba(124,58,237,.06); }
+
+    /* ── Printers grid ── */
+    .printers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+    .printer-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 16px; text-align: center;
+      transition: border-color .2s, transform .2s;
+    }
+    .printer-card:hover { border-color: rgba(124,58,237,.5); transform: translateY(-2px); }
+    .printer-icon { font-size: 22px; margin-bottom: 8px; }
+    .printer-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .printer-type {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--text-dim);
+    }
+    .printer-type.fdm  { color: #60a5fa; }
+    .printer-type.resin { color: #34d399; }
+    .printer-type.custom { color: var(--accent3); }
+
+    /* ── Install steps ── */
+    .install-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .install-step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px; position: relative;
+    }
+    .install-step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 16px;
+    }
+    .install-step h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .install-step p { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+    .install-step code {
+      display: inline-block; background: rgba(124,58,237,.15); color: var(--accent3);
+      padding: 1px 7px; border-radius: 4px; font-size: 12px; font-family: monospace;
+    }
+
+    /* ── CTA Banner ── */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(124,58,237,.2), rgba(168,85,247,.12));
+      border: 1px solid rgba(124,58,237,.3); border-radius: var(--radius-lg);
+      padding: 64px 40px; text-align: center;
+    }
+    .cta-banner h2 { font-size: clamp(24px, 4vw, 38px); font-weight: 900; letter-spacing: -.02em; margin-bottom: 14px; }
+    .cta-banner p { color: var(--text-muted); font-size: 16px; max-width: 480px; margin: 0 auto 32px; }
+
+    /* ── Requirements ── */
+    .req-list { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .req-pill {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 100px; padding: 8px 16px; font-size: 14px;
+    }
+    .req-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0; text-align: center;
+      color: var(--text-dim); font-size: 13px;
+    }
+    footer a { color: var(--text-dim); text-decoration: none; }
+    footer a:hover { color: var(--accent3); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div style="margin-bottom:28px;text-align:center;">
+        <img src="../images/Logo Black.jpg" alt="3DQuads" style="max-width:220px;height:auto;">
+      </div>
+      <div class="hero-eyebrow">
+        <span class="tag">Blender 4.5+ Extension</span>
+      </div>
+      <h1>
+        <span class="gradient-text">3DQuads Print Ready</span><br>
+        3D Print Preparation<br>Done Right
+      </h1>
+      <p class="hero-sub">
+        The complete pipeline that takes your Blender model from raw mesh to
+        printer-ready export — step by step, without leaving Blender.
+      </p>
+      <a href="#features" class="btn btn-outline">See All Features</a>
+      <a href="3DQuads_Print_ready_docs.HTML" class="btn btn-outline">View Documentation</a>
+      <div class="hero-badge">
+        <div class="hero-badge-item"><span>13+</span> Printer Presets</div>
+        <div class="hero-badge-item"><span>7</span> Guided Steps</div>
+        <div class="hero-badge-item"><span>0</span> External Dependencies</div>
+        <div class="hero-badge-item"><span>Blender</span> 4.5+ Ready</div>
+      </div>
+    </div>
+
+    <div class="hero-image-wrap">
+      <div class="img-placeholder">
+        <div class="img-placeholder-inner">
+          <div class="img-placeholder-icon">📷</div>
+          <div class="img-placeholder-label">Add hero screenshot: ../images/hero.jpg<br>Suggested: Full N-panel open showing all 7 steps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ THE PROBLEM ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">The Problem</span>
+      <h2>3D printing from Blender is <span class="gradient-text">painful</span></h2>
+      <p>Every experienced maker knows the frustration. 3DQuads Print Ready solves it all in one place.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">⚙️</div>
+        <h3>No Printer Awareness</h3>
+        <p>Blender knows nothing about your printer. You manually look up build volumes, wall thicknesses, and nozzle sizes every time.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📐</div>
+        <h3>Silent Scale Errors</h3>
+        <p>Blender's default unit setup is wrong for printing. Models silently export at the wrong scale — discovered only after a failed print.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🔍</div>
+        <h3>Hidden Mesh Problems</h3>
+        <p>Non-manifold edges, flipped normals, and self-intersections are invisible in the viewport but cause slicer errors and print failures.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📦</div>
+        <h3>Oversized Models</h3>
+        <p>When your model is too big for the build plate, splitting it cleanly is a multi-step manual process with no alignment assistance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════ FEATURES ═══ -->
+<section id="features">
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">The Solution</span>
+      <h2>Seven steps. One extension. <span class="gradient-text">Every time.</span></h2>
+      <p>3DQuads Print Ready walks you through a proven preparation checklist directly in the N-panel.</p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="feature">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">1</div>
+          <span class="step-label">Printer Profile</span>
+        </div>
+        <h3>Start With Your Printer, Not a Blank Slate</h3>
+        <p>
+          Select your printer from 13+ built-in presets — including the latest Bambu Lab, Prusa,
+          Creality, Elegoo and more. Every spec auto-fills instantly: build volume, nozzle diameter,
+          minimum wall thickness, and layer height. Or define a fully custom profile.
+        </p>
+        <ul class="feature-bullets">
+          <li><strong>13+ real printer presets</strong> including P1S, X1 Carbon, MK4S, Ender 3 V3, Mars 4 Ultra, Saturn 4 Ultra</li>
+          <li><strong>FDM and Resin</strong> printer types both supported</li>
+          <li><strong>Auto-fill everything</strong> — change the preset, all fields update instantly</li>
+          <li><strong>Custom profile</strong> — enter any build volume and specs for unlisted printers</li>
+          <li>All downstream steps (wall thickness, split, export) <strong>use your printer's actual specs</strong></li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step1-printer-profile.jpg<br>Suggested: Preset dropdown open, showing printer list</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="feature reverse">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">2</div>
+          <span class="step-label">Scale &amp; Units</span>
+        </div>
+        <h3>Fix Scale Errors Before They Ruin a Print</h3>
+        <p>
+          Blender's default unit setup is incompatible with 3D printing. 3DQuads Print Ready detects the
+          problem and fixes it in one click — so what you see in Blender is what the slicer receives.
+        </p>
+        <ul class="feature-bullets">
+          <li>Checks scene unit system, scale factor, and length unit setting</li>
+          <li><strong>Live object dimensions</strong> displayed in mm, cm, or inches</li>
+          <li>Detects <strong>unapplied scale transforms</strong> that silently corrupt exports</li>
+          <li><strong>Fit check</strong> — instant visual confirmation whether your model fits inside the selected printer's build volume</li>
+          <li><strong>One-click fix</strong> — sets METRIC units, scale 0.001, applies object scale</li>
+          <li>Rotation hints when a simple 90° flip would make the model fit</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step2-scale-units.jpg<br>Suggested: Step 2 panel with dimensions and fit check shown</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="feature">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">3</div>
+          <span class="step-label">Mesh Health</span>
+        </div>
+        <h3>Find and Fix Every Mesh Problem Instantly</h3>
+        <p>
+          A bad mesh produces slicer errors, failed prints, and missing walls. 3DQuads Print Ready runs five
+          targeted checks and offers one-click fixes for each — individually or all at once.
+        </p>
+        <ul class="feature-bullets">
+          <li><strong>Non-manifold edges</strong> — edges that cause open holes in the print</li>
+          <li><strong>Flipped normals</strong> — faces pointing the wrong way, confusing slicers</li>
+          <li><strong>Zero-area faces</strong> — degenerate geometry that breaks solidness</li>
+          <li><strong>Loose vertices</strong> — disconnected points that add noise to exports</li>
+          <li><strong>Self-intersections</strong> — overlapping geometry that creates impossible walls</li>
+          <li>Per-issue <strong>Fix</strong> buttons, plus <strong>Fix All</strong> for one-click repair</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step3-mesh-health.jpg<br>Suggested: Panel showing issue counts with Fix buttons, or a before/after comparison</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="feature reverse">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">4</div>
+          <span class="step-label">Wall Thickness</span>
+        </div>
+        <h3>See Thin Walls Before the Printer Does</h3>
+        <p>
+          Walls that are too thin for your nozzle diameter simply won't print — or will collapse.
+          3DQuads Print Ready visualizes exactly where those areas are with a live heatmap overlay on
+          your model.
+        </p>
+        <ul class="feature-bullets">
+          <li><strong>Ray-cast analysis</strong> measures real wall thickness across every face</li>
+          <li>Threshold auto-set from your <strong>printer's minimum wall thickness spec</strong></li>
+          <li>Color heatmap: <strong style="color:#ef4444">Red</strong> = too thin &nbsp;·&nbsp; <strong style="color:#f59e0b">Yellow</strong> = marginal &nbsp;·&nbsp; <strong style="color:#22c55e">Green</strong> = safe</li>
+          <li>Shows <strong>face count, minimum, and maximum</strong> thickness found</li>
+          <li><strong>Select Thin Faces</strong> — enters Edit Mode with problem faces selected for manual repair</li>
+          <li>Toggle overlay on/off without re-running the analysis</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step4-wall-thickness.jpg<br>Suggested: Model with red/yellow/green heatmap visible in viewport</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="feature">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">5</div>
+          <span class="step-label">Overhang Detection</span>
+        </div>
+        <h3>Know Exactly Where You Need Supports</h3>
+        <p>
+          Overhanging faces that exceed your printer's capability require support material — which
+          means more filament, more cleanup, and worse surface quality. 3DQuads Print Ready maps them
+          and helps you reduce them.
+        </p>
+        <ul class="feature-bullets">
+          <li>Configurable <strong>angle threshold</strong> (default 45°) — matches your slicer setting</li>
+          <li>World-space normal calculation — works correctly even on <strong>rotated objects</strong></li>
+          <li>Color overlay: Green = safe, Yellow = mild, Red = severe, Blue = build plate</li>
+          <li><strong>Select Overhang Faces</strong> for manual review and editing</li>
+          <li><strong>Orientation Optimizer</strong> — tests 6 canonical rotations and recommends the one with fewest overhangs</li>
+          <li>Shows the exact improvement: "Reduces overhangs from 143 to 12"</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step5-overhangs.jpg<br>Suggested: Model with overhang overlay active, showing green/red areas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="feature reverse">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">6</div>
+          <span class="step-label">Split for Print Bed</span>
+        </div>
+        <h3>Print Anything — Even If It's Bigger Than Your Printer</h3>
+        <p>
+          When your model is too large for the build volume, 3DQuads Print Ready splits it into
+          watertight pieces with flat mating faces. Define cuts automatically or fully manually —
+          with live viewport previews and built-in validation before you commit.
+        </p>
+        <ul class="feature-bullets">
+          <li><strong>Live preview overlay</strong> — orange build volume box and red cut planes drawn directly in the viewport, with no objects added to the Outliner</li>
+          <li><strong>Real-time slider updates</strong> — drag any position or tilt slider and the cut planes move instantly, no re-click required</li>
+          <li><strong>AUTO mode</strong> — detects which axes overflow and calculates the minimum cuts needed</li>
+          <li><strong>MANUAL mode</strong> — set each cut independently: choose its axis (X, Y or Z), exact position along the model, and optional tilt angle</li>
+          <li><strong>Validate Cuts</strong> — confirm every resulting piece fits the build volume before splitting, with per-cut error reporting</li>
+          <li><strong>Undo Split</strong> — one click restores the original model at any time</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step6-splitter.jpg<br>Suggested: Viewport showing build volume (orange) + cut planes (red) overlaid on model</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="feature">
+      <div class="feature-body">
+        <div class="feature-step">
+          <div class="step-badge">7</div>
+          <span class="step-label">Export</span>
+        </div>
+        <h3>One Click From Blender to Slicer</h3>
+        <p>
+          The final step handles everything: modifier application, scale correction,
+          multi-part naming, and directory management — so your slicer receives
+          clean, correctly-scaled files every time.
+        </p>
+        <ul class="feature-bullets">
+          <li>Export to <strong>STL, 3MF, or OBJ</strong> — your choice per session</li>
+          <li>Automatically exports <strong>all split parts</strong> as separate numbered files</li>
+          <li><strong>Applies modifiers</strong> on export without affecting your scene</li>
+          <li>Scale correction ensures <strong>exported geometry is always in millimeters</strong></li>
+          <li>Configurable <strong>file name prefix</strong> (e.g. <code>print_mymodel_part1.stl</code>)</li>
+          <li><strong>Quick Export</strong> — one click to STL in the same folder as your .blend file</li>
+        </ul>
+      </div>
+      <div class="feature-image">
+        <div class="img-placeholder">
+          <div class="img-placeholder-inner">
+            <div class="img-placeholder-icon">📷</div>
+            <div class="img-placeholder-label">../images/step7-export.jpg<br>Suggested: Step 7 panel showing format options, path, and export button</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /container -->
+</section>
+
+
+<!-- ════════════════════════════════════════════ COMPARISON ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">Comparison</span>
+      <h2>3DQuads Print Ready vs <span class="gradient-text">Blender's Built-In Tools</span></h2>
+      <p>
+        Blender ships with a basic 3D Print Toolbox. Here's what you're missing without 3DQuads Print Ready.
+      </p>
+    </div>
+    <div class="comparison-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>3DQuads Print Ready</th>
+            <th>Blender 3D Print Toolbox</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Guided step-by-step workflow</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Printer presets with real specs</td>
+            <td class="col-printready"><span class="check-yes">✓</span> 13+ presets</td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Build volume fit check</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Scale &amp; units auto-fix (1 click)</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Mesh health checks</td>
+            <td class="col-printready"><span class="check-yes">✓</span> 5 checks + auto-fix</td>
+            <td><span class="check-partial">Partial</span> basic checks only</td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Wall thickness analysis + heatmap</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Overhang detection + overlay</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Orientation optimizer</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Model splitter (oversized prints)</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Split preview (build vol + cut planes)</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+          <tr>
+            <td>Export pipeline (STL / 3MF / OBJ)</td>
+            <td class="col-printready"><span class="check-yes">✓</span> with scale correction</td>
+            <td><span class="check-partial">Partial</span> STL only, no scale fix</td>
+          </tr>
+          <tr class="comparison-highlight">
+            <td>Multi-part export (split models)</td>
+            <td class="col-printready"><span class="check-yes">✓</span></td>
+            <td><span class="check-no">✗</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ PRINTERS GRID ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">Supported Printers</span>
+      <h2>Built for the printers <span class="gradient-text">you actually use</span></h2>
+      <p>Real specs. Real build volumes. No guesswork.</p>
+    </div>
+    <div class="printers-grid">
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Bambu Lab P1S</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 256³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Bambu Lab X1 Carbon</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 256³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Bambu Lab A1</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 256³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Prusa MK4S</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 250×210×220 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Prusa Mini+</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 180³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Creality Ender 3 V3</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 220×220×250 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Creality K1 Max</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 300³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🔵</div>
+        <div class="printer-name">Elegoo Mars 4 Ultra</div>
+        <div class="printer-type resin">Resin &nbsp;·&nbsp; 153×78×165 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🔵</div>
+        <div class="printer-name">Elegoo Saturn 4 Ultra</div>
+        <div class="printer-type resin">Resin &nbsp;·&nbsp; 219×123×220 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Anycubic Kobra 3</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 250×250×260 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🖨️</div>
+        <div class="printer-name">Artillery Sidewinder X4 Plus</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 300×300×400 mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">🔧</div>
+        <div class="printer-name">Voron 2.4 350mm</div>
+        <div class="printer-type fdm">FDM &nbsp;·&nbsp; 350³ mm</div>
+      </div>
+      <div class="printer-card">
+        <div class="printer-icon">⚙️</div>
+        <div class="printer-name">Custom Printer</div>
+        <div class="printer-type custom">Any specs you need</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════ INSTALL ═══ -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">Installation</span>
+      <h2>Up and running <span class="gradient-text">in under a minute</span></h2>
+    </div>
+    <div class="install-steps">
+      <div class="install-step">
+        <div class="install-step-num">1</div>
+        <h3>Download</h3>
+        <p>Download <code>print_ready-1.0.0.zip</code> from your Superhive account after purchase.</p>
+      </div>
+      <div class="install-step">
+        <div class="install-step-num">2</div>
+        <h3>Open Preferences</h3>
+        <p>In Blender, go to <code>Edit &gt; Preferences &gt; Extensions</code>.</p>
+      </div>
+      <div class="install-step">
+        <div class="install-step-num">3</div>
+        <h3>Install from Disk</h3>
+        <p>Click <code>Install from Disk</code> and select the downloaded <code>.zip</code> file.</p>
+      </div>
+      <div class="install-step">
+        <div class="install-step-num">4</div>
+        <h3>Open the Panel</h3>
+        <p>Press <code>N</code> in the 3D Viewport and click the <code>Print Ready</code> tab. Done.</p>
+      </div>
+    </div>
+    <div style="margin-top: 32px; text-align: center;">
+      <div class="req-list">
+        <div class="req-pill"><div class="dot"></div>Blender 4.5 or later</div>
+        <div class="req-pill"><div class="dot"></div>Windows, macOS, Linux</div>
+        <div class="req-pill"><div class="dot"></div>No external packages</div>
+        <div class="req-pill"><div class="dot"></div>GPL-3.0 licensed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════ BOTTOM CTA ═══ -->
+<section>
+  <div class="container">
+    <div class="cta-banner">
+      <h2>Ready to print? <span class="gradient-text">Get 3DQuads Print Ready.</span></h2>
+      <p>Stop fighting your tools. Start making great prints. One extension, the entire workflow.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <p>
+      3DQuads Print Ready &nbsp;·&nbsp; Blender 4.5+ Extension &nbsp;·&nbsp;
+      Licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPL-3.0</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
