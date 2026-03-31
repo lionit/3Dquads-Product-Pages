@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Showcase Studio — Professional Blender Product Renders</title>
+<style>
+:root{
+  --bg:#0e0e10;--surface:#1a1a1f;--surface2:#222228;--border:#2a2a35;
+  --text:#e8e8f0;--muted:#888896;--accent:#6c63ff;
+  --accent-dim:rgba(108,99,255,.12);--accent-glow:rgba(108,99,255,.3);
+  --lite-bg:#1a3328;--lite-text:#52b788;--lite-bd:#2d5040;
+  --pro-bg:#3a2d00;--pro-text:#f4c430;--pro-bd:#5a4500;
+  --ult-bg:#2a0a3a;--ult-text:#e879f9;--ult-bd:#5a1a7a;
+  --r:10px;--r-sm:6px;--mw:1100px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+.wrap{max-width:var(--mw);margin:0 auto;padding:0 24px}
+.section{padding:80px 0}
+.section+.section{border-top:1px solid var(--border)}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15}
+h2{font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:700;line-height:1.25;margin-bottom:16px}
+h3{font-size:1.05rem;font-weight:700;margin-bottom:8px}
+h4{font-size:.92rem;font-weight:600;margin-bottom:6px}
+p{color:var(--muted);margin-bottom:16px}
+p:last-child{margin-bottom:0}
+.label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+/* badges */
+.b{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.8;vertical-align:middle;white-space:nowrap}
+.bl{background:var(--lite-bg);color:var(--lite-text);border:1px solid var(--lite-bd)}
+.bp{background:var(--pro-bg);color:var(--pro-text);border:1px solid var(--pro-bd)}
+.bu{background:var(--ult-bg);color:var(--ult-text);border:1px solid var(--ult-bd)}
+/* nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(14,14,16,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+.nav-i{max-width:var(--mw);margin:0 auto;display:flex;align-items:center;height:58px;gap:24px}
+.logo{font-size:1rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-links{display:flex;gap:24px;list-style:none;padding:0;margin:0 0 0 auto}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--text);text-decoration:none}
+.nav-links .cta a{color:var(--accent);font-weight:600}
+/* screenshot placeholder */
+.shot{width:100%;background:var(--surface2);border:2px dashed var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:.78rem;font-weight:500;letter-spacing:.04em;text-align:center;padding:24px;overflow:hidden}
+.shot-icon{font-size:1.8rem;opacity:.3}
+.shot-16{aspect-ratio:16/9}
+.shot-21{aspect-ratio:21/9}
+.shot-43{aspect-ratio:4/3}
+.shot img{width:100%;height:100%;object-fit:cover;border-radius:calc(var(--r) - 2px)}
+/* hero */
+.hero{padding:80px 0 60px;text-align:center}
+.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.pill{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 14px;font-size:.75rem;font-weight:500;color:var(--muted)}
+.hero h1{margin-bottom:18px}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:600px;margin:0 auto 36px;line-height:1.7}
+.hero-shot{margin-top:48px;border-radius:var(--r);overflow:hidden;box-shadow:0 0 80px var(--accent-glow)}
+/* pain */
+.pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:40px 0}
+.pain-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 24px}
+.pain-icon{font-size:1.8rem;margin-bottom:14px}
+.pain-card h3{color:var(--text);margin-bottom:8px}
+/* solution */
+.sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-top:40px}
+.sol-points{display:flex;flex-direction:column;gap:20px}
+.sol-point{display:flex;gap:16px;align-items:flex-start}
+.sol-num{width:32px;height:32px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent-glow);color:var(--accent);font-size:.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.sol-point h4{color:var(--text)}
+/* features */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.feat-card:hover{border-color:var(--accent);box-shadow:0 0 24px var(--accent-dim)}
+.feat-card .shot{border-radius:0;border:none;border-bottom:1px solid var(--border)}
+.feat-body{padding:20px}
+.feat-title{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.feat-title h3{margin:0;font-size:1rem}
+.feat-body p{font-size:.875rem;margin:0}
+/* presets section */
+.preset-group{margin-bottom:36px}
+.pg-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.pg-header h3{margin:0}
+/* compact preset cards */
+.preset-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.preset-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:flex-start;gap:12px;padding:12px 14px}
+.preset-card:hover{border-color:var(--border);background:var(--surface2)}
+.preset-emoji{font-size:1.3rem;flex-shrink:0;margin-top:1px;line-height:1}
+.preset-info{min-width:0}
+.preset-info strong{display:block;font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:3px;line-height:1.3}
+.preset-info span{font-size:.75rem;color:var(--muted);line-height:1.35;display:block}
+/* packs / ultimate callout */
+.ult-box{background:var(--ult-bg);border:1px solid var(--ult-bd);border-radius:var(--r);padding:24px 28px;margin-top:28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.ult-box h4{color:var(--ult-text);margin-bottom:4px}
+.ult-box p{color:var(--muted);font-size:.875rem;margin:0}
+/* comparison */
+.cmp-table{width:100%;border-collapse:collapse;margin-top:36px;font-size:.875rem}
+.cmp-table th{background:var(--surface2);padding:13px 18px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border-bottom:1px solid var(--border)}
+.cmp-table th:last-child{color:var(--accent)}
+.cmp-table td{padding:13px 18px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--muted)}
+.cmp-table td:first-child{color:var(--text);font-weight:600;width:16%}
+.cmp-table td:nth-child(2){width:42%}
+.cmp-table td:last-child{width:42%;color:var(--text)}
+.cmp-table tr:hover td{background:var(--surface)}
+/* tier table */
+.tier-wrap{margin-top:36px;border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tier-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.tier-table th{padding:18px 20px;background:var(--surface2);border-bottom:2px solid var(--border);font-weight:700}
+.tier-table th:first-child{text-align:left}
+.tier-table th:not(:first-child){text-align:center;width:130px}
+.th-l{color:var(--lite-text)}
+.th-p{color:var(--pro-text)}
+.th-u{color:var(--ult-text)}
+.tier-table td{padding:12px 20px;border-bottom:1px solid var(--border);color:var(--muted)}
+.tier-table td:first-child{color:var(--text)}
+.tier-table td:not(:first-child){text-align:center}
+.tier-table tr:last-child td{border-bottom:none}
+.tier-table tr:hover td{background:var(--surface)}
+.yes{color:var(--lite-text);font-size:1.1rem}
+.yes-p{color:var(--pro-text);font-size:1.1rem}
+.yes-u{color:var(--ult-text);font-size:1.1rem}
+.no{color:var(--border);font-size:1.1rem}
+/* footer */
+footer{border-top:1px solid var(--border);padding:40px 0}
+.foot-i{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+footer,footer a{color:var(--muted);font-size:.85rem}
+.foot-links{display:flex;gap:24px}
+/* responsive */
+@media(max-width:900px){
+  .pain-grid{grid-template-columns:1fr}
+  .sol-grid{grid-template-columns:1fr;gap:32px}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .preset-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .feat-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .cmp-table{font-size:.8rem}
+  .cmp-table td,.cmp-table th{padding:10px 12px}
+  .foot-i{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-i">
+    <div class="logo">Showcase Studio</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#presets">Presets</a></li>
+      <li><a href="#comparison">Comparison</a></li>
+      <li class="cta"><a href="Showcase_Docs.html">Documentation →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="pills">
+      <span class="pill">Blender 4.x</span>
+      <span class="pill">Cycles &amp; EEVEE</span>
+      <span class="pill">Armature Support</span>
+    </div>
+    <h1>Professional Product Showcases<br>Directly Inside Blender</h1>
+    <p class="hero-sub">One-click adaptive lighting, smart camera framing, depth of field, and batch rendering — all calibrated automatically to any asset size.</p>
+    <div class="hero-shot">
+      <div class="shot shot-21">
+        <div class="shot-icon">🎬</div>
+        <span>Screenshot: Full Studio Setup — hero render result in viewport</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <p class="label">The Problem</p>
+    <h2>Setting Up a Product Shot Shouldn't Take Hours</h2>
+    <p>Every time you switch objects you redo the same tedious work: move lights, guess camera distance, tweak f-stop, set up the floor — and still end up with inconsistent results across your portfolio.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">⚙️</div>
+        <h3>Lights That Don't Scale</h3>
+        <p>A lighting setup sized for a character is blinding on a small prop and too dim on a large vehicle. Every switch means adjusting energy and distances by hand.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📷</div>
+        <h3>Camera Guesswork</h3>
+        <p>Orbiting the viewport, adjusting focal length, moving the camera back — repeated for every object and every angle, never quite the same twice.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🗂️</div>
+        <h3>Batch Renders Are Manual</h3>
+        <p>Rendering 20 assets means 20 manual setups. No way to queue them, no consistent framing or lighting, and no time for anything else while it runs.</p>
+      </div>
+    </div>
+    <div class="shot shot-16" style="margin-top:12px">
+      <div class="shot-icon">🖼️</div>
+      <span>Screenshot: messy manual viewport — lights scattered, off-center object, inconsistent look</span>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section" id="solution">
+  <div class="wrap">
+    <p class="label">The Solution</p>
+    <h2>Showcase Studio Handles Everything Automatically</h2>
+    <div class="sol-grid">
+      <div class="sol-points">
+        <div class="sol-point">
+          <div class="sol-num">1</div>
+          <div>
+            <h4>Lights Scale to Your Object</h4>
+            <p>Every preset measures the object's bounding sphere and sets light energy, size, and distance to match — so a ring and a tank look equally polished.</p>
+          </div>
+        </div>
+        <div class="sol-point">
+          <div class="sol-num">2</div>
+          <div>
+            <h4>Camera Frames Itself</h4>
+            <p>Choose an angle preset and the camera positions itself at the exact distance for any focal length. Focal length and padding sliders update live — no Apply button.</p>
+          </div>
+        </div>
+        <div class="sol-point">
+          <div class="sol-num">3</div>
+          <div>
+            <h4>Depth of Field from Object Depth <span class="b bp">Pro</span></h4>
+            <p>Pick an intent — Subtle, Dramatic, Extreme Shallow — and the correct f-stop is calculated from the object's actual measured depth. No formulas, no guessing.</p>
+          </div>
+        </div>
+        <div class="sol-point">
+          <div class="sol-num">4</div>
+          <div>
+            <h4>Batch Renders Unattended <span class="b bp">Pro</span></h4>
+            <p>Add objects to the queue and walk away. Each one gets camera framing, lighting, floor, and DOF re-applied before its render fires.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="shot shot-43">
+          <div class="shot-icon">✨</div>
+          <span>Screenshot: Setup Showcase result — clean, well-lit, perfectly framed render</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="wrap">
+    <p class="label">Features</p>
+    <h2>Everything You Need for Consistent, Professional Renders</h2>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">💡</div>
+          <span>Screenshot: Lighting panel with preset selector and lights visible in viewport</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Adaptive Lighting</h3><span class="b bl">Lite</span></div>
+          <p>Professionally crafted presets covering portrait, cinematic, and product photography. Every light auto-scales in energy, size, and position to your object's bounding sphere.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">📐</div>
+          <span>Screenshot: Camera panel with angle preset selected and framed object in viewport</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Smart Camera Framing</h3><span class="b bl">Lite</span></div>
+          <p>8 angle presets plus custom azimuth/elevation. The camera calculates exact distance for any focal length so the object always fills the frame perfectly. Focal length and padding update live.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">🔭</div>
+          <span>Screenshot: DOF panel and rendered viewport with soft background bokeh</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Adaptive Depth of Field</h3><span class="b bp">Pro</span></div>
+          <p>Five intent levels from Everything Sharp to Extreme Shallow. F-stop is derived from the object's actual depth — focus point, bokeh shape, and aperture all configurable. F-stop and blades update live.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">📦</div>
+          <span>Screenshot: Batch queue list with multiple objects and status indicators</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Batch Rendering</h3><span class="b bp">Pro</span></div>
+          <p>Queue any mix of meshes and armatures. Each object gets its own camera setup, lighting, floor placement, and DOF calculation. Normal, Clay, and Wireframe passes per item.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">🔄</div>
+          <span>Screenshot: Turntable pivot empty visible in viewport with orbit path</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Turntable Animation</h3><span class="b bp">Pro</span></div>
+          <p>One button creates a full 360° camera orbit with optional sine-wave elevation variation and smooth easing. Export the full animation as an image sequence directly from the panel.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="shot shot-16">
+          <div class="shot-icon">🎨</div>
+          <span>Screenshot: Post-processing panel and rendered result with bloom and vignette</span>
+        </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>Post-Processing</h3><span class="b bp">Pro</span></div>
+          <p>Bloom, vignette, and watermark via Blender's compositor — no external software needed. Contact Sheet generates renders from all 8 angles and composites them into a grid automatically.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRESETS -->
+<section class="section" id="presets">
+  <div class="wrap">
+    <p class="label">Lighting Presets</p>
+    <h2>Studio-Grade Lighting for Every Style</h2>
+    <p>Every preset is a proven photographic or cinematic technique, re-engineered to scale automatically to any Blender object.</p>
+
+    <!-- Basic — Lite -->
+    <div class="preset-group" style="margin-top:40px">
+      <div class="pg-header">
+        <h3>Basic</h3><span class="b bl">Lite</span>
+        <span style="color:var(--muted);font-size:.85rem;margin-left:4px">Included in all editions</span>
+      </div>
+      <div class="preset-row">
+        <div class="preset-card">
+          <div class="preset-emoji">🎯</div>
+          <div class="preset-info"><strong>Three-Point Classic</strong><span>Industry-standard key, fill, and rim. Versatile for any subject.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">🔦</div>
+          <div class="preset-info"><strong>Single Key</strong><span>One hard directional light. Dramatic shadows, strong contrast.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">☀️</div>
+          <div class="preset-info"><strong>High Key</strong><span>Bright, even, near-shadowless. Clean product and portfolio look.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">⬜</div>
+          <div class="preset-info"><strong>Flat Neutral</strong><span>Large frontal softbox. Minimal depth cues, useful for game icons.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Studio — Pro -->
+    <div class="preset-group">
+      <div class="pg-header">
+        <h3>Studio</h3><span class="b bp">Pro</span>
+        <span style="color:var(--muted);font-size:.85rem;margin-left:4px">Photography classics</span>
+      </div>
+      <div class="preset-row" style="grid-template-columns:repeat(5,1fr)">
+        <div class="preset-card">
+          <div class="preset-emoji">🎭</div>
+          <div class="preset-info"><strong>Rembrandt</strong><span>Classic triangle highlight on the shadow side.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">🦋</div>
+          <div class="preset-info"><strong>Butterfly</strong><span>Key above, chin shadow. Glamour-style flattery.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">⚫</div>
+          <div class="preset-info"><strong>Split</strong><span>One half lit, one half dark. Bold and graphic.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">💫</div>
+          <div class="preset-info"><strong>Broad Rim</strong><span>Double rim lights, glowing outlined edges.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">✨</div>
+          <div class="preset-info"><strong>Soft Beauty</strong><span>Beauty-dish simulation. Soft, flattering diffuse.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cinematic — Pro -->
+    <div class="preset-group">
+      <div class="pg-header">
+        <h3>Cinematic</h3><span class="b bp">Pro</span>
+        <span style="color:var(--muted);font-size:.85rem;margin-left:4px">Film-inspired moods</span>
+      </div>
+      <div class="preset-row">
+        <div class="preset-card">
+          <div class="preset-emoji">🎬</div>
+          <div class="preset-info"><strong>Low Key Dark</strong><span>Single hard spotlight. Film noir atmosphere.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">🌟</div>
+          <div class="preset-info"><strong>Backlit Silhouette</strong><span>Strong backlight, glowing edges, dramatic haze.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">🌅</div>
+          <div class="preset-info"><strong>Golden Hour</strong><span>Warm orange key, cool blue sky fill.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">💜</div>
+          <div class="preset-info"><strong>Neon Dual Rim</strong><span>Cyan and magenta rim lights. Cyberpunk style.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product — Pro -->
+    <div class="preset-group">
+      <div class="pg-header">
+        <h3>Product Photography</h3><span class="b bp">Pro</span>
+        <span style="color:var(--muted);font-size:.85rem;margin-left:4px">Commercial grade</span>
+      </div>
+      <div class="preset-row" style="grid-template-columns:repeat(3,1fr)">
+        <div class="preset-card">
+          <div class="preset-emoji">📦</div>
+          <div class="preset-info"><strong>Product Softbox</strong><span>Dual softboxes at 45°. The standard commercial setup.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">💎</div>
+          <div class="preset-info"><strong>Jewelry Sparkle</strong><span>Small high-intensity sources for sharp specular highlights.</span></div>
+        </div>
+        <div class="preset-card">
+          <div class="preset-emoji">💻</div>
+          <div class="preset-info"><strong>Electronics Clean</strong><span>Cool balanced lighting. The Apple product-shot aesthetic.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ultimate callout -->
+    <div class="ult-box">
+      <span class="b bu" style="font-size:11px">Ultimate</span>
+      <div>
+        <h4>34 Total Presets in the Ultimate Edition</h4>
+        <p>The Ultimate variant bundles all four additional preset packs — Anime &amp; Stylized, Game Art, Extended Cinematic, and Extended Product — giving you 18 more hand-crafted setups on top of the Pro core.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="section" id="comparison">
+  <div class="wrap">
+    <p class="label">Comparison</p>
+    <h2>Traditional Workflow vs Showcase Studio</h2>
+    <p>See how each step of a product render maps to a single control in Showcase Studio.</p>
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Without the Add-on</th>
+          <th>With Showcase Studio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Lighting</td>
+          <td>Manually place, size, and adjust energy of every light for each object</td>
+          <td>Select a preset — lights auto-scale in energy, size, and position to the object</td>
+        </tr>
+        <tr>
+          <td>Camera</td>
+          <td>Orbit the viewport, guess distance, adjust focal length, repeat for each angle</td>
+          <td>Pick an angle preset → Frame Object. Camera positions itself at the correct distance</td>
+        </tr>
+        <tr>
+          <td>Depth of Field</td>
+          <td>Look up thin-lens formula, estimate CoC, set f-stop manually, check in preview</td>
+          <td>Choose an intent (Subtle / Dramatic / Extreme Shallow) — f-stop calculated from object depth</td>
+        </tr>
+        <tr>
+          <td>Multiple Objects</td>
+          <td>Repeat the entire setup for each asset — hours of repeated manual work</td>
+          <td>Add to Batch Queue, press Start — each object gets full setup and renders unattended</td>
+        </tr>
+        <tr>
+          <td>Turntable</td>
+          <td>Create an empty, parent the camera, keyframe Z-rotation, adjust timing manually</td>
+          <td>Click Create Turntable — pivot, keyframes, and easing are all set up in one click</td>
+        </tr>
+        <tr>
+          <td>Consistency</td>
+          <td>Results vary per setup — no guaranteed match between renders of different assets</td>
+          <td>Same preset + same settings = identical style across every asset, every time</td>
+        </tr>
+        <tr>
+          <td>Contact Sheet</td>
+          <td>Render each angle manually, export, composite in an external image editor</td>
+          <td>Generate Contact Sheet — renders all 8 angles and composites a grid automatically</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TIER TABLE -->
+<section class="section" id="editions">
+  <div class="wrap">
+    <p class="label">Editions</p>
+    <h2>Lite · Pro · Ultimate</h2>
+    <p>All editions include full armature and character support. Upgrade at any time.</p>
+    <div class="tier-wrap">
+      <table class="tier-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="th-l">Lite</th>
+            <th class="th-p">Pro</th>
+            <th class="th-u">Ultimate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Basic Lighting Presets</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Studio, Cinematic &amp; Product Presets (12)</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Smart Camera Framing (8 angle presets)</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Background (Solid, Gradient, Transparent)</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Floor Plane (Flat &amp; Cyclorama)</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Render Profiles (Preview → Final + Social)</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Hardware Detection</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>HDRI Environment Lighting</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Adaptive Depth of Field</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Batch Rendering Queue</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Turntable Animation Export</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Contact Sheet (8-angle grid)</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Bloom, Vignette &amp; Watermark</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Anime &amp; Stylized Pack (4 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Game Art Pack (4 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Extended Cinematic Pack (5 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Extended Product Pack (5 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-i">
+      <div>
+        <strong style="color:var(--text)">Showcase Studio</strong> — Blender Add-on<br>
+        <span>Available on Superhive Marketplace</span>
+      </div>
+      <div class="foot-links">
+        <a href="Showcase_Docs.html">Documentation</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — Showcase Studio</title>
+<style>
+:root{
+  --bg:#0e0e10;--surface:#1a1a1f;--surface2:#222228;--border:#2a2a35;
+  --text:#e8e8f0;--muted:#888896;--accent:#6c63ff;
+  --accent-dim:rgba(108,99,255,.12);--accent-glow:rgba(108,99,255,.3);
+  --lite-bg:#1a3328;--lite-text:#52b788;--lite-bd:#2d5040;
+  --pro-bg:#3a2d00;--pro-text:#f4c430;--pro-bd:#5a4500;
+  --ult-bg:#2a0a3a;--ult-text:#e879f9;--ult-bd:#5a1a7a;
+  --r:10px;--r-sm:6px;--mw:1100px;--sbw:225px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;line-height:1.2;margin-bottom:8px}
+h2{font-size:1.5rem;font-weight:700;line-height:1.25}
+h3{font-size:1.02rem;font-weight:700;margin-bottom:10px;color:var(--text)}
+h4{font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:4px}
+p{color:var(--muted);margin-bottom:14px}
+p:last-child{margin-bottom:0}
+ul,ol{padding-left:20px;color:var(--muted)}
+li{margin-bottom:5px}
+/* badges */
+.b{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.8;vertical-align:middle;white-space:nowrap}
+.bl{background:var(--lite-bg);color:var(--lite-text);border:1px solid var(--lite-bd)}
+.bp{background:var(--pro-bg);color:var(--pro-text);border:1px solid var(--pro-bd)}
+.bu{background:var(--ult-bg);color:var(--ult-text);border:1px solid var(--ult-bd)}
+.live{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:rgba(82,183,136,.14);border:1px solid rgba(82,183,136,.3);color:#52b788;border-radius:20px;padding:1px 7px;vertical-align:middle}
+/* nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(14,14,16,.93);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px}
+.nav-i{max-width:var(--mw);margin:0 auto;display:flex;align-items:center;height:58px;gap:24px}
+.logo{font-size:1rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.nav-links{display:flex;gap:24px;list-style:none;padding:0;margin:0 0 0 auto}
+.nav-links a{color:var(--muted);font-size:.875rem;font-weight:500;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);text-decoration:none}
+.nav-links .cta a{color:var(--accent);font-weight:600}
+/* docs layout */
+.docs-wrap{max-width:var(--mw);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:var(--sbw) 1fr;gap:0;min-height:calc(100vh - 58px)}
+.sidebar{position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;padding:24px 0;border-right:1px solid var(--border);scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sg{margin-bottom:20px}
+.sg-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 16px;margin-bottom:4px;display:block}
+.sb-nav{list-style:none;padding:0;margin:0}
+.sb-nav a{display:flex;align-items:center;gap:7px;padding:6px 16px;font-size:.82rem;color:var(--muted);border-left:2px solid transparent;transition:all .15s;line-height:1.3}
+.sb-nav a:hover{color:var(--text);text-decoration:none;background:var(--surface)}
+.sb-nav a.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim)}
+.sb-nav .b{font-size:8px;padding:1px 5px}
+/* main */
+.docs-main{padding:40px 0 80px 44px;min-width:0}
+/* doc section */
+.ds{margin-bottom:68px;scroll-margin-top:74px}
+.ds-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.ds-header h2{margin:0}
+.ds-badges{display:flex;gap:6px;align-items:center;padding-top:4px;flex-wrap:wrap}
+/* callouts */
+.callout{border-radius:var(--r-sm);padding:13px 16px;margin:14px 0;display:flex;gap:12px;align-items:flex-start;font-size:.875rem}
+.ci{background:var(--accent-dim);border:1px solid var(--accent-glow)}
+.ci p{color:var(--text)}
+.cp{background:var(--pro-bg);border:1px solid var(--pro-bd)}
+.cp p{color:var(--pro-text)}
+.ct{background:var(--lite-bg);border:1px solid var(--lite-bd)}
+.ct p{color:var(--lite-text)}
+.cu{background:var(--ult-bg);border:1px solid var(--ult-bd)}
+.cu p{color:var(--ult-text)}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+.callout p{margin:0}
+/* steps */
+.steps{display:flex;flex-direction:column;gap:13px;margin:14px 0}
+.step{display:flex;gap:14px;align-items:flex-start}
+.sn{width:26px;height:26px;border-radius:50%;background:var(--accent-dim);border:1px solid var(--accent-glow);color:var(--accent);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px}
+.step h4{margin-bottom:3px}
+.step p{font-size:.875rem;margin:0}
+/* subsection */
+.dsub{margin:28px 0 0}
+.dsub h3{display:flex;align-items:center;gap:9px;font-size:.98rem;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:12px}
+/* tables */
+.st{width:100%;border-collapse:collapse;font-size:.845rem;margin:10px 0 18px}
+.st th{text-align:left;padding:9px 13px;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border)}
+.st td{padding:9px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+.st td:first-child{font-family:ui-monospace,"SFMono-Regular",Menlo,monospace;font-size:.78rem;color:var(--accent);width:185px;white-space:nowrap}
+.st td:nth-child(2){color:var(--text);width:120px}
+.st td:last-child{color:var(--muted)}
+.st tr:last-child td{border-bottom:none}
+.pt{width:100%;border-collapse:collapse;font-size:.845rem;margin:10px 0 18px}
+.pt th{text-align:left;padding:9px 13px;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border)}
+.pt td{padding:9px 13px;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top}
+.pt td:first-child{color:var(--text);font-weight:600;width:195px}
+.pt tr:last-child td{border-bottom:none}
+/* screenshot placeholder */
+.shot{width:100%;background:var(--surface2);border:2px dashed var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:.78rem;font-weight:500;letter-spacing:.04em;text-align:center;padding:20px;margin:16px 0}
+.shot-icon{font-size:1.8rem;opacity:.3}
+.shot-16{aspect-ratio:16/9}
+/* compact preset rows in docs */
+.preset-row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0 18px}
+.preset-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);display:flex;align-items:flex-start;gap:11px;padding:10px 13px}
+.preset-emoji{font-size:1.2rem;flex-shrink:0;margin-top:1px;line-height:1}
+.preset-info{min-width:0}
+.preset-info strong{display:block;font-size:.8rem;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
+.preset-info span{font-size:.74rem;color:var(--muted);line-height:1.3;display:block}
+/* docs hero */
+.docs-hero{background:var(--surface);border-bottom:1px solid var(--border);padding:32px 0}
+.docs-hero-i{max-width:var(--mw);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:var(--sbw) 1fr;gap:0}
+.docs-hero-content{padding-left:44px}
+.docs-hero-content p{font-size:1rem;color:var(--muted);margin-top:8px}
+/* footer */
+footer{border-top:1px solid var(--border);padding:36px 0}
+.foot-i{max-width:var(--mw);margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+footer,footer a{color:var(--muted);font-size:.85rem}
+.foot-links{display:flex;gap:24px}
+/* kbd */
+kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:.8rem;font-family:ui-monospace,"SFMono-Regular",Menlo,monospace}
+/* responsive */
+@media(max-width:900px){
+  .docs-wrap{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:14px 0}
+  .docs-main{padding:28px 0 60px}
+  .docs-hero-i{grid-template-columns:1fr}
+  .docs-hero-content{padding-left:0;margin-top:8px}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+  .preset-row{grid-template-columns:1fr}
+  .foot-i{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-i">
+    <div class="logo">Showcase Studio</div>
+    <ul class="nav-links">
+      <li><a href="Showcase_Product.html">← Product Page</a></li>
+      <li><a href="#getting-started">Getting Started</a></li>
+      <li><a href="#lighting">Lighting</a></li>
+      <li class="cta"><a href="#batch">Batch Render</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="docs-hero">
+  <div class="docs-hero-i">
+    <div></div>
+    <div class="docs-hero-content">
+      <h1>Documentation</h1>
+      <p>Complete step-by-step reference for all Showcase Studio features. Use the sidebar to jump to any section.</p>
+    </div>
+  </div>
+</div>
+
+<div class="docs-wrap">
+
+  <aside class="sidebar">
+    <div class="sg">
+      <span class="sg-label">Start Here</span>
+      <ul class="sb-nav">
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#quick-setup">Quick Setup <span class="b bl">Lite</span></a></li>
+      </ul>
+    </div>
+    <div class="sg">
+      <span class="sg-label">Core Features</span>
+      <ul class="sb-nav">
+        <li><a href="#lighting">Lighting <span class="b bl">Lite</span></a></li>
+        <li><a href="#camera">Camera &amp; Framing <span class="b bl">Lite</span></a></li>
+        <li><a href="#background">Background <span class="b bl">Lite</span></a></li>
+        <li><a href="#render">Render &amp; Output <span class="b bl">Lite</span></a></li>
+        <li><a href="#hardware">Hardware Detection <span class="b bl">Lite</span></a></li>
+        <li><a href="#cleanup">Cleanup <span class="b bl">Lite</span></a></li>
+      </ul>
+    </div>
+    <div class="sg">
+      <span class="sg-label">Pro Features</span>
+      <ul class="sb-nav">
+        <li><a href="#dof">Depth of Field <span class="b bp">Pro</span></a></li>
+        <li><a href="#turntable">Turntable <span class="b bp">Pro</span></a></li>
+        <li><a href="#batch">Batch Rendering <span class="b bp">Pro</span></a></li>
+        <li><a href="#contact-sheet">Contact Sheet <span class="b bp">Pro</span></a></li>
+        <li><a href="#post-process">Post-Processing <span class="b bp">Pro</span></a></li>
+      </ul>
+    </div>
+    <div class="sg">
+      <span class="sg-label">Ultimate</span>
+      <ul class="sb-nav">
+        <li><a href="#packs">Preset Packs <span class="b bu">Ultimate</span></a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="docs-main">
+
+    <!-- GETTING STARTED -->
+    <div class="ds" id="getting-started">
+      <div class="ds-header"><h2>Getting Started</h2></div>
+      <div class="dsub">
+        <h3>Requirements</h3>
+        <ul>
+          <li>Blender 4.0 or later</li>
+          <li>Cycles or EEVEE render engine</li>
+          <li>Windows, macOS, or Linux</li>
+        </ul>
+      </div>
+      <div class="dsub">
+        <h3>Installation</h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Download the zip</h4><p>Do not unzip — Blender installs directly from the zip archive.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Open Blender Preferences</h4><p>Go to <strong>Edit → Preferences → Add-ons</strong>.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Install from Disk</h4><p>Click <strong>Install from Disk</strong>, navigate to the downloaded zip, and confirm.</p></div></div>
+          <div class="step"><div class="sn">4</div><div><h4>Enable the add-on</h4><p>Search for "Showcase Studio" and tick the checkbox.</p></div></div>
+        </div>
+      </div>
+      <div class="dsub">
+        <h3>Finding the Panel</h3>
+        <p>Open the <strong>3D Viewport</strong>, press <kbd>N</kbd> to open the N-panel, then click the <strong>Showcase</strong> tab.</p>
+      </div>
+    </div>
+
+    <!-- QUICK SETUP -->
+    <div class="ds" id="quick-setup">
+      <div class="ds-header">
+        <h2>Quick Setup (One-Click)</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span></div>
+      </div>
+      <p>The <strong>Setup Showcase</strong> button runs lighting, camera framing, and background setup in a single click.</p>
+      <div class="callout ci">
+        <div class="callout-icon">ℹ️</div>
+        <p>In Pro and Ultimate, Setup Showcase also applies Depth of Field automatically if DOF is enabled in the panel.</p>
+      </div>
+      <div class="dsub">
+        <h3>Steps</h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Select your object</h4><p>Click the mesh or armature you want to showcase. For armatures, the add-on uses all child meshes automatically.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Click Setup Showcase</h4><p>Found at the top of the Showcase panel. Creates lights, positions the camera, and applies the background.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Switch to Rendered viewport</h4><p>Press <kbd>Z</kbd> and choose Rendered, or click the sphere icon in the viewport header.</p></div></div>
+        </div>
+      </div>
+      <div class="shot shot-16">
+        <div class="shot-icon">📸</div>
+        <span>Screenshot: Showcase panel with Setup Showcase button highlighted and rendered result in viewport</span>
+      </div>
+    </div>
+
+    <!-- LIGHTING -->
+    <div class="ds" id="lighting">
+      <div class="ds-header">
+        <h2>Lighting</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span><span class="b bp">Pro</span></div>
+      </div>
+      <p>Choose a preset and click <strong>Apply Lighting</strong>. All lights are created in a dedicated collection and auto-scaled to the active object's bounding sphere — so the same preset produces consistent results on any size asset.</p>
+
+      <div class="dsub">
+        <h3>Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Lighting Preset</td><td>Dropdown</td><td>Select from Basic presets (Lite) or all presets (Pro/Ultimate)</td></tr>
+            <tr><td>Intensity <span class="b bp" style="font-size:8px">Pro</span></td><td>Slider 0.1–5.0×</td><td>Global brightness multiplier for all showcase lights. <span class="live">⚡ live</span> — updates viewport instantly</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Basic Presets <span class="b bl">Lite</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎯</div><div class="preset-info"><strong>Three-Point Classic</strong><span>Industry-standard key, fill, and rim. Versatile for any subject.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🔦</div><div class="preset-info"><strong>Single Key</strong><span>One hard light with no fill. Dramatic shadows and strong contrast.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">☀️</div><div class="preset-info"><strong>High Key</strong><span>Bright, even, near-shadowless. Clean product and portfolio look.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">⬜</div><div class="preset-info"><strong>Flat Neutral</strong><span>Single large frontal softbox. Minimal depth, useful for game icons.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Studio Presets <span class="b bp">Pro</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎭</div><div class="preset-info"><strong>Rembrandt</strong><span>45° key creates a triangle of light on the shadow side. Classic portrait technique.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🦋</div><div class="preset-info"><strong>Butterfly</strong><span>Key directly above. Creates a small shadow under the nose. Glamour style.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">⚫</div><div class="preset-info"><strong>Split</strong><span>One side fully lit, one fully dark. Bold and graphic.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">💫</div><div class="preset-info"><strong>Broad Rim</strong><span>Two rim lights behind the subject create glowing outlines.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">✨</div><div class="preset-info"><strong>Soft Beauty</strong><span>Beauty-dish simulation. Very soft and flattering diffuse light.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Cinematic Presets <span class="b bp">Pro</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎬</div><div class="preset-info"><strong>Low Key Dark</strong><span>Single hard spotlight. Film noir atmosphere.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌟</div><div class="preset-info"><strong>Backlit Silhouette</strong><span>Strong backlight creates glowing edges against dark fill.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌅</div><div class="preset-info"><strong>Golden Hour</strong><span>Warm orange key, cool blue sky fill. Sunset outdoors feel.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">💜</div><div class="preset-info"><strong>Neon Dual Rim</strong><span>Cyan and magenta rim lights. Cyberpunk / neon aesthetic.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Product Photography Presets <span class="b bp">Pro</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">📦</div><div class="preset-info"><strong>Product Softbox</strong><span>Dual softboxes at 45°. Standard commercial product setup.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">💎</div><div class="preset-info"><strong>Jewelry Sparkle</strong><span>Small high-intensity sources for sharp specular highlights.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">💻</div><div class="preset-info"><strong>Electronics Clean</strong><span>Cool balanced lighting. The Apple product-shot aesthetic.</span></div></div>
+        </div>
+      </div>
+
+      <div class="callout ct">
+        <div class="callout-icon">💡</div>
+        <p>Lights are deleted and recreated each time you Apply Lighting — switching presets always produces a clean result with no leftover lights.</p>
+      </div>
+    </div>
+
+    <!-- CAMERA & FRAMING -->
+    <div class="ds" id="camera">
+      <div class="ds-header">
+        <h2>Camera &amp; Framing</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span></div>
+      </div>
+      <p>Click <strong>Frame Object</strong> to position the showcase camera. Camera distance is calculated automatically from the object's bounding sphere — no guessing required.</p>
+
+      <div class="dsub">
+        <h3>Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Angle Preset</td><td>Dropdown</td><td>Choose one of 8 standard angles or Custom to enter values manually</td></tr>
+            <tr><td>Custom Azimuth</td><td>Angle °</td><td>Horizontal rotation around the object. Shown only when Angle = Custom</td></tr>
+            <tr><td>Custom Elevation</td><td>Angle °</td><td>Vertical tilt. Negative values look up at the object. Shown only when Angle = Custom</td></tr>
+            <tr><td>Focal Length</td><td>20–200 mm</td><td>Camera lens. <span class="live">⚡ live</span> — repositions camera and updates lens instantly</td></tr>
+            <tr><td>Padding</td><td>0–50 %</td><td>Space around the object edges. <span class="live">⚡ live</span> — reframes the camera instantly</td></tr>
+            <tr><td>Framing Mode</td><td>Dropdown</td><td><strong>Bounding Box</strong> — fast default. <strong>Tight Fit</strong> — accurate vertex projection.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Angle Presets</h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎯</div><div class="preset-info"><strong>Front 3/4</strong><span>Most common portfolio angle. Shows depth and form.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">📐</div><div class="preset-info"><strong>Isometric</strong><span>Equal parts front, side, and top. Classic game-art view.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">➡️</div><div class="preset-info"><strong>Side Profile</strong><span>Direct side view. Useful for vehicles, weapons, silhouettes.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">⬇️</div><div class="preset-info"><strong>Top Down</strong><span>Looking straight down. Great for maps, layouts, icons.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">⬆️</div><div class="preset-info"><strong>Hero / Low Angle</strong><span>Looking up at the subject. Dramatic and heroic.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🔲</div><div class="preset-info"><strong>Front View</strong><span>Straight-on from the front. Face shots, UI mockups.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">↩️</div><div class="preset-info"><strong>Back 3/4</strong><span>Rear three-quarter. Shows back of characters, armor, vehicles.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🎛️</div><div class="preset-info"><strong>Custom</strong><span>Enter any azimuth and elevation angle manually.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACKGROUND -->
+    <div class="ds" id="background">
+      <div class="ds-header">
+        <h2>Background</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span><span class="b bp">Pro</span></div>
+      </div>
+      <p>Click <strong>Apply Background</strong> to set the scene world shader and optionally create a floor plane sized to the object.</p>
+
+      <div class="dsub">
+        <h3>Background Types</h3>
+        <table class="st">
+          <thead><tr><th>Type</th><th>Controls</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Solid Color</td><td>Color picker</td><td>Single flat color applied via world shader nodes</td></tr>
+            <tr><td>Gradient</td><td>Top &amp; bottom colors</td><td>Vertical gradient from bottom to top — natural studio sweep feel</td></tr>
+            <tr><td>Transparent</td><td>—</td><td>Alpha-transparent background. Renders a PNG with no background for compositing</td></tr>
+            <tr><td>HDRI <span class="b bp" style="font-size:8px">Pro</span></td><td>File path, Rotation, Strength</td><td>Load any .hdr or .exr as environment lighting and background</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>HDRI Environment <span class="b bp">Pro</span></h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Set HDRI file path</h4><p>Click the folder icon and select your .hdr or .exr file.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Adjust Rotation and Strength</h4><p>Rotation spins the environment. Strength controls overall brightness.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Click Apply HDRI</h4><p>Loads the image into Blender's world nodes and applies it as environment lighting and visible background.</p></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Floor Plane</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Show Floor</td><td>Toggle</td><td>Creates a shadow-catcher floor plane sized to the object's bounding sphere</td></tr>
+            <tr><td>Floor Type</td><td>Dropdown</td><td><strong>Flat</strong> — simple square. <strong>Cyclorama</strong> — curved infinity cove with seamless wall.</td></tr>
+            <tr><td>Glossiness</td><td>0–1</td><td>0 = matte shadow catcher only. 1 = perfect mirror reflection.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ct">
+          <div class="callout-icon">💡</div>
+          <p>In Batch Rendering, the floor is repositioned under each object automatically before every render.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPTH OF FIELD -->
+    <div class="ds" id="dof">
+      <div class="ds-header">
+        <h2>Depth of Field</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">⭐</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <p>Showcase Studio calculates the correct f-stop from the object's measured depth, so DOF always looks appropriate regardless of object size or distance. No thin-lens formulas required.</p>
+
+      <div class="dsub">
+        <h3>Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Enable DOF</td><td>Toggle</td><td>Turns on camera depth of field. When off, all DOF settings are ignored.</td></tr>
+            <tr><td>DOF Intent</td><td>Dropdown</td><td>How much blur to apply — see Intent Levels below</td></tr>
+            <tr><td>Focus Rule</td><td>Dropdown</td><td>Where the sharpest point sits: Center, Front Third, or Front Quarter</td></tr>
+            <tr><td>Manual Override</td><td>Toggle</td><td>When on, ignores the calculated f-stop and uses your Manual F-Stop value instead</td></tr>
+            <tr><td>F-Stop (Manual)</td><td>0.95–128</td><td>Manual aperture value. Active only when Manual Override is on. <span class="live">⚡ live</span></td></tr>
+            <tr><td>Calculated F-Stop</td><td>Read-only</td><td>The f-stop computed from object depth and intent. For reference only.</td></tr>
+            <tr><td>Bokeh Blades</td><td>0–16</td><td>Aperture blade count. 0 = circular. 5–8 = natural polygon bokeh. <span class="live">⚡ live</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Intent Levels</h3>
+        <table class="pt">
+          <thead><tr><th>Intent</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td>None</td><td>DOF disabled — everything in the scene is equally sharp.</td></tr>
+            <tr><td>Everything Sharp</td><td>DOF on but calculated to keep the entire object in focus. Subtle optically-correct depth.</td></tr>
+            <tr><td>Subtle</td><td>Slight softening at the very front and back. Recommended default for portfolio renders.</td></tr>
+            <tr><td>Dramatic</td><td>Noticeable bokeh falloff — portrait-photography style. Works best on characters and medium-depth objects.</td></tr>
+            <tr><td>Extreme Shallow</td><td>Very narrow focus plane — macro or artistic. Most of the object will be blurred.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Applying DOF</h3>
+        <p>Click <strong>Apply DOF</strong> in the panel, or include it automatically via <strong>Setup Showcase</strong> when Enable DOF is checked. In Batch Rendering, DOF is re-applied per object automatically.</p>
+      </div>
+    </div>
+
+    <!-- RENDER & OUTPUT -->
+    <div class="ds" id="render">
+      <div class="ds-header">
+        <h2>Render &amp; Output</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span></div>
+      </div>
+      <p>Configure render quality, output location, and file format from the Render panel.</p>
+
+      <div class="dsub">
+        <h3>Render Profiles</h3>
+        <table class="pt">
+          <thead><tr><th>Profile</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Preview</td><td>Low samples, fast. For quick iteration and checking framing.</td></tr>
+            <tr><td>Portfolio</td><td>Balanced quality and speed. The default for publishing finished work.</td></tr>
+            <tr><td>Final</td><td>Maximum samples and quality settings. Use for print or high-quality delivery.</td></tr>
+            <tr><td>Social 1:1</td><td>Square (1080×1080) optimised for Instagram and social feeds.</td></tr>
+            <tr><td>Social 9:16</td><td>Vertical for Stories, TikTok, and mobile-first content.</td></tr>
+            <tr><td>Social 16:9</td><td>Widescreen for YouTube thumbnails and banner images.</td></tr>
+            <tr><td>Custom</td><td>No settings changed — uses whatever is set in Blender's render properties.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Output Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Output Directory</td><td>Path</td><td>Folder where renders are saved. Blender path tokens (//) supported.</td></tr>
+            <tr><td>Output Format</td><td>Dropdown</td><td>PNG, JPEG, EXR, WebP, etc. Sets both render format and file extension.</td></tr>
+            <tr><td>Name Template</td><td>Text</td><td>Filename pattern. Tokens like {object}, {preset}, {angle} are replaced automatically.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Test Render vs Full Render</h3>
+        <ul>
+          <li><strong>Test Render</strong> — renders at half resolution to check lighting and framing quickly.</li>
+          <li><strong>Full Render</strong> — renders at full resolution and saves to the Output Directory.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TURNTABLE -->
+    <div class="ds" id="turntable">
+      <div class="ds-header">
+        <h2>Turntable Animation</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">⭐</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <p>Creates a smooth 360° camera orbit. The camera is parented to a pivot empty that rotates — the object itself is never moved.</p>
+
+      <div class="dsub">
+        <h3>Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Frames</td><td>Int</td><td>Total animation length. 120 frames at 24 fps = 5-second turntable.</td></tr>
+            <tr><td>FPS</td><td>Int</td><td>Sets the scene frame rate. Match to your delivery format.</td></tr>
+            <tr><td>Elevation Variation</td><td>Float °</td><td>Amplitude of a sine-wave elevation arc during orbit. 0 = flat circle.</td></tr>
+            <tr><td>Easing</td><td>Dropdown</td><td>Linear, Ease In/Out, or Smooth Step (very smooth S-curve).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>Steps</h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Set up your scene</h4><p>Apply lighting and framing before creating the turntable.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Configure settings</h4><p>Set Frames, FPS, Elevation Variation, and Easing in the Turntable panel.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Click Create Turntable</h4><p>A pivot empty is created at the object centre, the camera is parented to it, and rotation keyframes are added.</p></div></div>
+          <div class="step"><div class="sn">4</div><div><h4>Preview in viewport</h4><p>Press <kbd>Space</kbd> to play the animation and check the orbit.</p></div></div>
+          <div class="step"><div class="sn">5</div><div><h4>Click Render Turntable</h4><p>Renders the full animation as an image sequence to the Output Directory.</p></div></div>
+        </div>
+      </div>
+
+      <div class="callout ct">
+        <div class="callout-icon">💡</div>
+        <p>Click <strong>Remove Turntable</strong> to unparent the camera, delete the pivot empty, and clear the animation. The camera returns to its standalone position.</p>
+      </div>
+    </div>
+
+    <!-- BATCH RENDERING -->
+    <div class="ds" id="batch">
+      <div class="ds-header">
+        <h2>Batch Rendering</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">⭐</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <p>Add multiple objects to a queue and render them all in sequence. Before each render, camera, lighting, floor, and DOF are re-applied automatically for that specific object.</p>
+
+      <div class="dsub">
+        <h3>Building the Queue</h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Select objects in the viewport</h4><p>Select one or more meshes or armatures using Shift+Click or <kbd>A</kbd> to select all.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Click Add Selected</h4><p>All selected objects are added to the Batch Queue. Objects already in the queue are skipped.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Configure per-item options</h4><p>Each item has: <strong>Enabled</strong> toggle, <strong>Clay</strong> pass checkbox, <strong>Wireframe</strong> pass checkbox.</p></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Queue Management</h3>
+        <table class="st">
+          <thead><tr><th>Action</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Move Up / Down</td><td>Reorder items using the arrow buttons next to the list</td></tr>
+            <tr><td>Remove</td><td>Deletes the selected item from the queue</td></tr>
+            <tr><td>Clear Queue</td><td>Removes all items at once</td></tr>
+            <tr><td>Reset to Pending</td><td>Marks all Done or Failed items as Pending so they can be rendered again</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub">
+        <h3>What Happens Per Object</h3>
+        <ol>
+          <li>Isolates the object (hides everything else)</li>
+          <li>Applies the current Render Profile and safety settings</li>
+          <li>Re-positions the camera using the active Angle Preset and Focal Length</li>
+          <li>Recreates lights using the active Lighting Preset, scaled to this object</li>
+          <li>Repositions the floor under this object's bounding box</li>
+          <li>Recalculates and applies Depth of Field for this object (if enabled)</li>
+          <li>Renders Normal pass, then Clay and Wireframe passes if enabled</li>
+          <li>Saves each pass to Output Directory with the object name in the filename</li>
+          <li>Restores visibility and moves to the next object</li>
+        </ol>
+      </div>
+
+      <div class="dsub">
+        <h3>Status Indicators</h3>
+        <table class="pt">
+          <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Pending</td><td>Waiting to be rendered</td></tr>
+            <tr><td>Rendering</td><td>Currently active in the queue</td></tr>
+            <tr><td>Done</td><td>Rendered successfully</td></tr>
+            <tr><td>Failed</td><td>Render was cancelled or encountered an error</td></tr>
+            <tr><td>Skipped</td><td>Item was disabled or its object was deleted</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout ci">
+        <div class="callout-icon">ℹ️</div>
+        <p>Press <kbd>Esc</kbd> during a batch render to cancel. Items that have not started will be marked as Skipped. Already-completed renders are saved.</p>
+      </div>
+    </div>
+
+    <!-- CONTACT SHEET -->
+    <div class="ds" id="contact-sheet">
+      <div class="ds-header">
+        <h2>Contact Sheet</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">⭐</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <p>Renders the active object from all 8 built-in angle presets and composites the results into a single grid image.</p>
+
+      <div class="dsub">
+        <h3>Steps</h3>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Set up your scene</h4><p>Apply lighting and configure settings as you want the contact sheet to look. The current Lighting Preset is used for every angle.</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Select the object</h4><p>Click the mesh or armature to make it active.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Click Generate Contact Sheet</h4><p>Renders from all 8 angles, then composites them into a grid.</p></div></div>
+          <div class="step"><div class="sn">4</div><div><h4>Find the output</h4><p>Saved to the Output Directory with "_contact_sheet" appended to the filename.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST-PROCESSING -->
+    <div class="ds" id="post-process">
+      <div class="ds-header">
+        <h2>Post-Processing</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">⭐</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <p>Bloom, vignette, and watermark effects are applied via Blender's compositor. Apply them independently and remove all at once with <strong>Remove All Effects</strong>.</p>
+
+      <div class="dsub">
+        <h3>Bloom</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Bloom Intensity</td><td>Float</td><td>Brightness of the glow effect. Higher = more visible bloom.</td></tr>
+            <tr><td>Bloom Threshold</td><td>Float</td><td>Minimum pixel brightness to emit bloom. Raise to limit bloom to bright highlights only.</td></tr>
+          </tbody>
+        </table>
+        <p>Click <strong>Apply Bloom</strong> to add a Glare compositor node.</p>
+      </div>
+
+      <div class="dsub">
+        <h3>Vignette</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Vignette Intensity</td><td>0–1</td><td>Strength of darkening at image edges. 0 = no effect, 1 = heavy dark border.</td></tr>
+          </tbody>
+        </table>
+        <p>Click <strong>Apply Vignette</strong> to add an elliptical mask overlay to the compositor.</p>
+      </div>
+
+      <div class="dsub">
+        <h3>Watermark</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Watermark Image</td><td>File path</td><td>Path to your watermark PNG (transparent background recommended)</td></tr>
+            <tr><td>Position</td><td>Dropdown</td><td>9 positions: Top/Center/Bottom × Left/Center/Right</td></tr>
+            <tr><td>Opacity</td><td>0–1</td><td>Transparency of the watermark overlay</td></tr>
+          </tbody>
+        </table>
+        <p>Click <strong>Apply Watermark</strong> to add the image overlay to the compositor.</p>
+      </div>
+
+      <div class="dsub">
+        <h3>Remove All Effects</h3>
+        <p>Click <strong>Remove All Effects</strong> to delete all Showcase Studio compositor nodes (bloom, vignette, watermark) in one action. The base render output is unaffected.</p>
+      </div>
+    </div>
+
+    <!-- HARDWARE DETECTION -->
+    <div class="ds" id="hardware">
+      <div class="ds-header">
+        <h2>Hardware Detection</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span></div>
+      </div>
+      <p>Detects your GPU and CPU capabilities and recommends appropriate render settings.</p>
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><div><h4>Click Detect Hardware</h4><p>Found in the Tools section of the panel.</p></div></div>
+        <div class="step"><div class="sn">2</div><div><h4>View results</h4><p>The panel shows: GPU availability, GPU type, CPU core count, recommended render engine, and denoiser support.</p></div></div>
+      </div>
+      <div class="callout ct">
+        <div class="callout-icon">💡</div>
+        <p>Hardware info is cached after detection. If you change render hardware, run Detect Hardware again to update the cache.</p>
+      </div>
+    </div>
+
+    <!-- CLEANUP -->
+    <div class="ds" id="cleanup">
+      <div class="ds-header">
+        <h2>Cleanup</h2>
+        <div class="ds-badges"><span class="b bl">Lite</span></div>
+      </div>
+      <p>The <strong>Cleanup</strong> button removes all objects created by Showcase Studio:</p>
+      <ul style="margin-top:8px">
+        <li>All showcase lights</li>
+        <li>The showcase camera</li>
+        <li>Floor and backdrop planes</li>
+        <li>Turntable pivot empty and keyframes</li>
+        <li>The Showcase Studio collection</li>
+      </ul>
+      <div class="callout ci" style="margin-top:16px">
+        <div class="callout-icon">ℹ️</div>
+        <p>Compositor effects (bloom, vignette, watermark) are <strong>not</strong> removed by Cleanup — use <strong>Remove All Effects</strong> in the Post-Processing panel for those.</p>
+      </div>
+    </div>
+
+    <!-- PRESET PACKS -->
+    <div class="ds" id="packs">
+      <div class="ds-header">
+        <h2>Preset Packs</h2>
+        <div class="ds-badges"><span class="b bu">Ultimate</span></div>
+      </div>
+      <div class="callout cu">
+        <div class="callout-icon">✨</div>
+        <p>All preset packs are included in the <strong>Ultimate</strong> edition. They are bundled together — there is no separate purchase for individual packs.</p>
+      </div>
+      <p>The Ultimate edition adds 18 additional hand-crafted lighting presets across four packs, on top of the full Pro feature set.</p>
+
+      <div class="dsub">
+        <h3>Anime &amp; Stylized Pack <span class="b bu">Ultimate</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">💫</div><div class="preset-info"><strong>Anime Rim</strong><span>Strong backlight rim with soft frontal fill. Classic anime character look.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">✏️</div><div class="preset-info"><strong>Cel Shaded</strong><span>Single hard directional light. Works best with toon/NPR shaders.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌸</div><div class="preset-info"><strong>Pastel Soft</strong><span>Soft pink and lavender tones. Dreamy kawaii aesthetic.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🎆</div><div class="preset-info"><strong>Vibrant Pop</strong><span>Bold yellow key with cyan fill. High-saturation pop-art energy.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Game Art Pack <span class="b bu">Ultimate</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎮</div><div class="preset-info"><strong>Inventory Icon</strong><span>Even overhead lighting for UI icons and sprite renders.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🦸</div><div class="preset-info"><strong>Character Select</strong><span>Heroic three-quarter lighting for character selection screens.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">⚔️</div><div class="preset-info"><strong>Weapon Showcase</strong><span>Dramatic key with specular rim. Highlights metallic surfaces.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🏔️</div><div class="preset-info"><strong>Environment Preview</strong><span>Soft ambient with gentle sun. Natural look for dioramas.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Extended Cinematic Pack <span class="b bu">Ultimate</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">🎩</div><div class="preset-info"><strong>Film Noir</strong><span>Single hard spotlight, extreme shadows. 1940s atmosphere.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌃</div><div class="preset-info"><strong>Neon Glow</strong><span>Pink and blue neon strip lights. Futuristic night city look.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌅</div><div class="preset-info"><strong>Golden Hour</strong><span>Warm sunset with cool sky fill. Extended multi-light version.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🌙</div><div class="preset-info"><strong>Moonlight</strong><span>Cold blue-white night lighting. Serene and mysterious.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🕯️</div><div class="preset-info"><strong>Candlelight</strong><span>Warm orange point light from below. Intimate and atmospheric.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Extended Product Pack <span class="b bu">Ultimate</span></h3>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">💍</div><div class="preset-info"><strong>Jewelry</strong><span>Multiple small high-intensity sources for maximum sparkle.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">📱</div><div class="preset-info"><strong>Electronics</strong><span>Balanced cool lighting for tech products. Clean and distraction-free.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🍽️</div><div class="preset-info"><strong>Food</strong><span>Warm overhead key with soft fill. Appetising and natural.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">💄</div><div class="preset-info"><strong>Cosmetics</strong><span>Soft beauty lighting. Flattering for packaging and skincare.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">🚗</div><div class="preset-info"><strong>Automotive</strong><span>Dramatic strip lights for smooth highlight streaks on curved surfaces.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="foot-i">
+    <div>
+      <strong style="color:var(--text)">Showcase Studio</strong> — Documentation<br>
+      <span>Available on Superhive Marketplace</span>
+    </div>
+    <div class="foot-links">
+      <a href="Showcase_Product.html">← Product Page</a>
+      <a href="#getting-started">Back to Top</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const sections=document.querySelectorAll('.ds');
+const links=document.querySelectorAll('.sb-nav a');
+function onScroll(){
+  let active='';
+  sections.forEach(s=>{if(s.getBoundingClientRect().top<120)active=s.id;});
+  links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href').replace('#','')=== active);});
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+</script>
+</body>
+</html>
