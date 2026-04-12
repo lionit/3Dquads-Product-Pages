@@ -182,6 +182,7 @@ kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;
       <span class="sg-label">Pro Features</span>
       <ul class="sb-nav">
         <li><a href="#dof">Depth of Field <span class="b bp">Pro</span></a></li>
+        <li><a href="#gobo">GOBO Shadows <span class="b bp">Pro</span></a></li>
         <li><a href="#turntable">Turntable <span class="b bp">Pro</span></a></li>
         <li><a href="#batch">Batch Rendering <span class="b bp">Pro</span></a></li>
         <li><a href="#contact-sheet">Contact Sheet <span class="b bp">Pro</span></a></li>
@@ -330,7 +331,6 @@ kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;
             <tr><td>Custom Elevation</td><td>Angle °</td><td>Vertical tilt. Negative values look up at the object. Shown only when Angle = Custom</td></tr>
             <tr><td>Focal Length</td><td>20–200 mm</td><td>Camera lens. <span class="live">⚡ live</span> — repositions camera and updates lens instantly</td></tr>
             <tr><td>Padding</td><td>0–50 %</td><td>Space around the object edges. <span class="live">⚡ live</span> — reframes the camera instantly</td></tr>
-            <tr><td>Framing Mode</td><td>Dropdown</td><td><strong>Bounding Box</strong> — fast default. <strong>Tight Fit</strong> — accurate vertex projection.</td></tr>
           </tbody>
         </table>
       </div>
@@ -490,6 +490,157 @@ kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;
       </div>
     </div>
 
+    <!-- GOBO SHADOWS -->
+    <div class="ds" id="gobo">
+      <div class="ds-header">
+        <h2>GOBO Shadow Patterns</h2>
+        <div class="ds-badges"><span class="b bp">Pro</span></div>
+      </div>
+      <div class="callout cp">
+        <div class="callout-icon">&#11088;</div>
+        <p>This feature requires Showcase Studio Pro or Ultimate.</p>
+      </div>
+      <div class="callout ci">
+        <div class="callout-icon">&#8505;&#65039;</div>
+        <p>A <strong>GOBO</strong> (Go Between) is a physical panel with cutouts placed in front of a studio light to project shaped shadows onto a subject or background. In Showcase Studio, the GOBO system is a dedicated area light driven by a procedural shader &mdash; no texture files needed, all patterns are generated in-engine.</p>
+      </div>
+
+      <div class="dsub" id="gobo-library">
+        <h3>Library Generation</h3>
+        <p>Before using GOBO patterns, generate the texture library once. This bakes all 12 procedural patterns to disk and takes approximately 15 seconds.</p>
+        <div class="steps">
+          <div class="step"><div class="sn">1</div><div><h4>Open the GOBO Shadows panel</h4><p>Found in the Lighting section of the Showcase Studio panel (Pro/Ultimate only).</p></div></div>
+          <div class="step"><div class="sn">2</div><div><h4>Click <strong>Generate GOBO Library</strong></h4><p>Blender processes each pattern. A progress indicator shows in the status bar.</p></div></div>
+          <div class="step"><div class="sn">3</div><div><h4>Wait ~15 seconds</h4><p>Once complete, the panel shows &ldquo;Library Ready&rdquo; and all 12 patterns become selectable.</p></div></div>
+          <div class="step"><div class="sn">4</div><div><h4>Library persists across files</h4><p>Textures are saved to disk next to the extension folder. Opening a new .blend file does not require regenerating.</p></div></div>
+        </div>
+        <div class="callout ct">
+          <div class="callout-icon">&#128161;</div>
+          <p>If you reinstall Blender or move to a new machine, click <strong>Regenerate GOBO Library</strong> to rebuild it. The old library is replaced automatically.</p>
+        </div>
+      </div>
+
+      <div class="dsub" id="gobo-enable">
+        <h3>Enabling GOBO</h3>
+        <p>Toggle the <strong>GOBO Shadows</strong> checkbox in the panel header. When enabled, a GOBO light object is created automatically scaled to match the active object&rsquo;s bounding sphere. When disabled, the GOBO light is removed from the scene.</p>
+        <div class="callout ct">
+          <div class="callout-icon">&#128161;</div>
+          <p>The GOBO light is also removed when you run <strong>Clean Up</strong>.</p>
+        </div>
+      </div>
+
+      <div class="dsub" id="gobo-patterns">
+        <h3>Pattern Selection</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Category Filter</td><td>Dropdown</td><td>Filter the pattern list: All, Architectural, Natural, Geometric, Studio, or Artistic.</td></tr>
+            <tr><td>Pattern</td><td>Dropdown</td><td>The shadow pattern to project. Selecting a new pattern applies it immediately.</td></tr>
+          </tbody>
+        </table>
+
+        <h4 style="margin-top:20px;margin-bottom:10px;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Architectural</h4>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">&#128759;</div><div class="preset-info"><strong>Venetian Blinds</strong><span>Horizontal slats &mdash; classic film noir striped shadows.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#127968;</div><div class="preset-info"><strong>Window Frame (Single)</strong><span>Single pane with frame &mdash; cross-shaped shadow cast.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#129521;</div><div class="preset-info"><strong>Brick Wall</strong><span>Rows of rectangular light shapes &mdash; industrial feel.</span></div></div>
+        </div>
+
+        <h4 style="margin-top:16px;margin-bottom:10px;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Natural</h4>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">&#127807;</div><div class="preset-info"><strong>Tree Branches</strong><span>Dappled light filtering through branches and leaves.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#127811;</div><div class="preset-info"><strong>Dense Foliage</strong><span>Heavy leaf coverage &mdash; deep forest scattered light.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#9925;</div><div class="preset-info"><strong>Cloud Dapple</strong><span>Soft large-scale variation as if filtered through clouds.</span></div></div>
+        </div>
+
+        <h4 style="margin-top:16px;margin-bottom:10px;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Geometric</h4>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">&#128208;</div><div class="preset-info"><strong>Diagonal Slashes</strong><span>Sharp diagonal lines &mdash; dynamic and graphic.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#9899;</div><div class="preset-info"><strong>Perforated Grid</strong><span>Circular dots like light through perforated metal.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#128311;</div><div class="preset-info"><strong>Hexagon Mesh</strong><span>Honeycomb pattern &mdash; tech and sci-fi feel.</span></div></div>
+        </div>
+
+        <h4 style="margin-top:16px;margin-bottom:10px;font-size:.82rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)">Studio &amp; Artistic</h4>
+        <div class="preset-row">
+          <div class="preset-card"><div class="preset-emoji">&#128161;</div><div class="preset-info"><strong>Spotlight Circle</strong><span>Circular pool with soft edges &mdash; stage lighting feel.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#128682;</div><div class="preset-info"><strong>Barn Doors</strong><span>Rectangular slit as if through studio barn doors.</span></div></div>
+          <div class="preset-card"><div class="preset-emoji">&#127917;</div><div class="preset-info"><strong>Abstract Organic</strong><span>Flowing organic shapes &mdash; artistic shadow effect.</span></div></div>
+        </div>
+      </div>
+
+      <div class="dsub" id="gobo-adjust">
+        <h3>Pattern Adjustments</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Rotation</td><td>0&deg;</td><td>Rotate the pattern within the projected light. Range &minus;360&deg; to +360&deg;. <span class="live">&#9889; live</span></td></tr>
+            <tr><td>Scale</td><td>1.0</td><td>Scale the pattern. 1.0 = fills the light area. &gt;1.0 zooms in (larger shadow features). &lt;1.0 zooms out (smaller, more repeated). <span class="live">&#9889; live</span></td></tr>
+            <tr><td>Softness</td><td>0.0</td><td>Blend shadow edges. 0 = sharp hard cutout. 0.5 = soft gradient. 1.0 = invisible. <span class="live">&#9889; live</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub" id="gobo-position">
+        <h3>Light Position</h3>
+        <p>Controls where the GOBO light sits relative to the object. Moving the light automatically rescales its size and compensates energy to maintain consistent shadow coverage.</p>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Azimuth Offset</td><td>0&deg;</td><td>Rotate the light&rsquo;s orbital position around the object. Range &minus;180&deg; to +180&deg;.</td></tr>
+            <tr><td>Elevation</td><td>60&deg;</td><td>Vertical angle of the light. 90&deg; = directly above, 5&deg; = nearly at ground level.</td></tr>
+            <tr><td>Distance Scale</td><td>1.0</td><td>Move the light closer or farther. Increasing distance enlarges the light and boosts energy to maintain shadow size and brightness.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="dsub" id="gobo-light">
+        <h3>Light Settings</h3>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Light Power</td><td>500 W</td><td>Energy of the GOBO area light in watts. Increase for brighter, more visible shadow patterns.</td></tr>
+            <tr><td>Spread</td><td>1&deg;</td><td>Angular beam spread. <strong>Keep low (1&ndash;5&deg;) for sharp shadows.</strong> Higher values soften and eventually dissolve the pattern entirely.</td></tr>
+            <tr><td>Light Size</td><td>auto</td><td>Physical size of the area light in metres. Set at creation based on object size. Changing it re-normalises the projected pattern automatically.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ci">
+          <div class="callout-icon">&#8505;&#65039;</div>
+          <p><strong>Spread vs. Softness:</strong> Use <em>Softness</em> to blur pattern edges while keeping the beam focused. Use <em>Spread</em> to widen the beam &mdash; high spread dissolves the shadow and makes the light behave like a regular area light.</p>
+        </div>
+      </div>
+
+      <div class="dsub" id="gobo-custom">
+        <h3>Custom Image</h3>
+        <p>Use any image file as a GOBO mask instead of the built-in library.</p>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Use Custom Image</td><td>Toggle</td><td>Switches from the procedural library to a user-supplied image file.</td></tr>
+            <tr><td>Custom Image Path</td><td>File path</td><td>PNG or JPG to project. Black areas = shadow, white areas = lit.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ct">
+          <div class="callout-icon">&#128161;</div>
+          <p>Use a pure black-and-white PNG for sharpest results. Grey values produce partial shadows. Avoid JPEG &mdash; compression artefacts create visible noise in the shadow pattern.</p>
+        </div>
+      </div>
+
+      <div class="dsub">
+        <h3>Tips &amp; Best Results</h3>
+        <div class="callout ci">
+          <div class="callout-icon">&#8505;&#65039;</div>
+          <ul style="margin:0;padding-left:18px;color:var(--muted);font-size:.875rem;line-height:1.8">
+            <li>Pair <strong>Venetian Blinds</strong> with <strong>Low Key Dark</strong> or <strong>Split</strong> preset for an instant film noir look.</li>
+            <li>Use <strong>Spotlight Circle</strong> with a dark background to simulate a stage performance shot.</li>
+            <li>Increase <strong>Distance Scale</strong> above 1.5 to project the shadow across a larger area &mdash; useful when you want the pattern on both the object and the background wall.</li>
+            <li><strong>Softness</strong> 0.4&ndash;0.6 turns any hard pattern into a subtle ambient mood effect rather than a graphic cutout.</li>
+            <li>For turntable animations, the GOBO light is fixed to the world &mdash; shadow patterns remain stationary as the object rotates.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
     <!-- TURNTABLE -->
     <div class="ds" id="turntable">
       <div class="ds-header">
@@ -631,42 +782,72 @@ kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;
         <div class="ds-badges"><span class="b bp">Pro</span></div>
       </div>
       <div class="callout cp">
-        <div class="callout-icon">⭐</div>
+        <div class="callout-icon">&#11088;</div>
         <p>This feature requires Showcase Studio Pro or Ultimate.</p>
       </div>
-      <p>Bloom, vignette, and watermark effects are applied via Blender's compositor. Apply them independently and remove all at once with <strong>Remove All Effects</strong>.</p>
+      <p>Glare, vignette, lens distortion, and watermark effects are applied non-destructively via Blender&rsquo;s compositor. Each effect can be applied and removed independently. Use <strong>Remove All Effects</strong> to clear everything at once.</p>
 
-      <div class="dsub">
-        <h3>Bloom</h3>
+      <div class="dsub" id="post-glare">
+        <h3>Glare &amp; Bloom</h3>
+        <p>You can add <strong>multiple glare layers</strong> &mdash; each entry in the glare list is a separate compositor Glare node with its own type and settings. Stack them for complex effects (e.g. fog glow + streaks).</p>
         <table class="st">
-          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th>Setting</th><th>Type / Range</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td>Bloom Intensity</td><td>Float</td><td>Brightness of the glow effect. Higher = more visible bloom.</td></tr>
-            <tr><td>Bloom Threshold</td><td>Float</td><td>Minimum pixel brightness to emit bloom. Raise to limit bloom to bright highlights only.</td></tr>
+            <tr><td>Glare Type</td><td>Dropdown</td><td><strong>Fog Glow</strong> &mdash; soft halo around bright areas (classic bloom). <strong>Streaks</strong> &mdash; directional light rays. <strong>Ghosts</strong> &mdash; lens flare ghost orbs. <strong>Simple Star</strong> &mdash; four-point star burst.</td></tr>
+            <tr><td>Intensity</td><td>0.0&ndash;1.0</td><td>Brightness of the glow effect.</td></tr>
+            <tr><td>Threshold</td><td>0.0&ndash;2.0</td><td>Minimum pixel brightness to emit glow. Raise to 0.9&ndash;1.2 to limit to hottest highlights only.</td></tr>
           </tbody>
         </table>
-        <p>Click <strong>Apply Bloom</strong> to add a Glare compositor node.</p>
+        <p>Click <strong>Add Glare</strong> to append a new entry. Remove individual entries with the <strong>&times;</strong> button beside each.</p>
+        <div class="callout ct">
+          <div class="callout-icon">&#128161;</div>
+          <p>For a clean product look: one Fog Glow layer, Threshold 0.9, Intensity 0.3. For dramatic sci-fi: layer Fog Glow + Streaks.</p>
+        </div>
       </div>
 
-      <div class="dsub">
+      <div class="dsub" id="post-vignette">
         <h3>Vignette</h3>
+        <p>Darkens the edges of the image using an elliptical mask, drawing the viewer&rsquo;s eye toward the center of the frame.</p>
         <table class="st">
-          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th>Setting</th><th>Type / Range</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td>Vignette Intensity</td><td>0–1</td><td>Strength of darkening at image edges. 0 = no effect, 1 = heavy dark border.</td></tr>
+            <tr><td>Intensity</td><td>0.0&ndash;1.0</td><td>Darkening strength at image edges. 0 = no effect, 1 = heavy dark border.</td></tr>
+            <tr><td>Invert Factor</td><td>0.0&ndash;1.0</td><td>Inverts the vignette color &mdash; at 1.0 edges brighten instead of darken.</td></tr>
+            <tr><td>Mask Size X / Y</td><td>0.0&ndash;2.0</td><td>Horizontal and vertical extent of the clear center ellipse. Larger = smaller vignette border.</td></tr>
+            <tr><td>Position X / Y</td><td>0.0&ndash;1.0</td><td>Center of the ellipse. Default 0.5 / 0.5 = image center.</td></tr>
+            <tr><td>Rotation</td><td>0&ndash;360&deg;</td><td>Tilt the ellipse for asymmetric compositions.</td></tr>
+            <tr><td>Mask Input</td><td>0.0&ndash;1.0</td><td>Blend strength of the mask shape.</td></tr>
+            <tr><td>Mask Value</td><td>0.0&ndash;1.0</td><td>Brightness of the clear center area.</td></tr>
           </tbody>
         </table>
-        <p>Click <strong>Apply Vignette</strong> to add an elliptical mask overlay to the compositor.</p>
+        <p>Click <strong>Apply Vignette</strong> to create or update the compositor nodes.</p>
       </div>
 
-      <div class="dsub">
+      <div class="dsub" id="post-lens">
+        <h3>Lens Distortion</h3>
+        <p>Simulates optical lens imperfections &mdash; barrel/pincushion warp and chromatic aberration. Adds subtle realism to otherwise clean CGI renders.</p>
+        <table class="st">
+          <thead><tr><th>Setting</th><th>Type / Range</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>Enable Lens Distortion</td><td>Toggle</td><td>Activates the lens distortion compositor node.</td></tr>
+            <tr><td>Distortion Amount</td><td>&minus;1.0 &ndash; +1.0</td><td>Positive = barrel distortion (bulging outward). Negative = pincushion (pinching inward). Keep subtle: 0.05&ndash;0.1 for realism.</td></tr>
+            <tr><td>Dispersion</td><td>0.0&ndash;1.0</td><td>Chromatic aberration &mdash; separates RGB channels toward image edges. Adds a subtle vintage or anamorphic feel.</td></tr>
+          </tbody>
+        </table>
+        <div class="callout ct">
+          <div class="callout-icon">&#128161;</div>
+          <p>Use small values: Distortion 0.05 and Dispersion 0.02 adds a natural camera feel without making distortion obvious.</p>
+        </div>
+      </div>
+
+      <div class="dsub" id="post-watermark">
         <h3>Watermark</h3>
         <table class="st">
-          <thead><tr><th>Setting</th><th>Type</th><th>Description</th></tr></thead>
+          <thead><tr><th>Setting</th><th>Type / Range</th><th>Description</th></tr></thead>
           <tbody>
             <tr><td>Watermark Image</td><td>File path</td><td>Path to your watermark PNG (transparent background recommended)</td></tr>
-            <tr><td>Position</td><td>Dropdown</td><td>9 positions: Top/Center/Bottom × Left/Center/Right</td></tr>
-            <tr><td>Opacity</td><td>0–1</td><td>Transparency of the watermark overlay</td></tr>
+            <tr><td>Position</td><td>Dropdown</td><td>9 positions: Top / Center / Bottom &times; Left / Center / Right</td></tr>
+            <tr><td>Opacity</td><td>0.0&ndash;1.0</td><td>Transparency of the watermark overlay</td></tr>
           </tbody>
         </table>
         <p>Click <strong>Apply Watermark</strong> to add the image overlay to the compositor.</p>
@@ -674,10 +855,9 @@ kbd{background:var(--surface2);border:1px solid var(--border);border-radius:4px;
 
       <div class="dsub">
         <h3>Remove All Effects</h3>
-        <p>Click <strong>Remove All Effects</strong> to delete all Showcase Studio compositor nodes (bloom, vignette, watermark) in one action. The base render output is unaffected.</p>
+        <p>Click <strong>Remove All Effects</strong> to delete all Showcase Studio compositor nodes (glare, vignette, lens distortion, watermark) in one action. The base render output is unaffected.</p>
       </div>
     </div>
-
     <!-- HARDWARE DETECTION -->
     <div class="ds" id="hardware">
       <div class="ds-header">
