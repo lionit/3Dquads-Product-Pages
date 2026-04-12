@@ -78,6 +78,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(14,14,16,.93);backdrop-fil
 .feat-title{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .feat-title h3{margin:0;font-size:1rem}
 .feat-body p{font-size:.875rem;margin:0}
+/* feature card real images */
+.feat-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-bottom:1px solid var(--border)}
 /* presets section */
 .preset-group{margin-bottom:36px}
 .pg-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
@@ -148,6 +150,7 @@ footer,footer a{color:var(--muted);font-size:.85rem}
   <div class="nav-i">
     <div class="logo">Showcase Studio</div>
     <ul class="nav-links">
+      <li><a href="#video">Video</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#presets">Presets</a></li>
       <li><a href="#comparison">Comparison</a></li>
@@ -170,15 +173,28 @@ footer,footer a{color:var(--muted);font-size:.85rem}
       <span class="pill">Blender 4.x</span>
       <span class="pill">Cycles &amp; EEVEE</span>
       <span class="pill">Armature Support</span>
+      <span class="pill">GOBO Shadows</span>
     </div>
     <h1>Professional Product Showcases<br>Directly Inside Blender</h1>
-    <p class="hero-sub">One-click adaptive lighting, smart camera framing, depth of field, and batch rendering — all calibrated automatically to any asset size.</p>
+    <p class="hero-sub">One-click adaptive lighting, smart camera framing, GOBO shadow patterns, depth of field, and batch rendering — all calibrated automatically to any asset size.</p>
     <div class="hero-shot">
       <!--<div class="shot shot-21">
         <div class="shot-icon">🎬</div>
         <span>Screenshot: Full Studio Setup — hero render result in viewport</span>
       </div>-->
       <img src="../images/SCS-01.png" alt="Print Ready panel overview" style="width:100%;border-radius:20px;display:block;">
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="section" id="video">
+  <div class="wrap" style="text-align:center">
+    <p class="label">See It In Action</p>
+    <h2>Watch Showcase Studio in Action</h2>
+    <p>Adaptive lighting, camera framing, GOBO shadow patterns, batch rendering, and post-processing.</p>
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--r);margin-top:36px;box-shadow:0 0 60px var(--accent-glow);max-width:900px;margin-left:auto;margin-right:auto;">
+      <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" src="https://www.youtube.com/embed/VIDEO_ID" title="Showcase Studio for Blender" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
 </section>
@@ -261,10 +277,7 @@ footer,footer a{color:var(--muted);font-size:.85rem}
     <div class="feat-grid">
 
       <div class="feat-card">
-        <div class="shot shot-16">
-          <div class="shot-icon">💡</div>
-          <span>Screenshot: Lighting panel with preset selector and lights visible in viewport</span>
-        </div>
+        <img src="../images/SCS-Lighting.png" alt="Adaptive Lighting panel" class="feat-img">
         <div class="feat-body">
           <div class="feat-title"><h3>Adaptive Lighting</h3><span class="b bl">Lite</span></div>
           <p>Professionally crafted presets covering portrait, cinematic, and product photography. Every light auto-scales in energy, size, and position to your object's bounding sphere.</p>
@@ -272,10 +285,7 @@ footer,footer a{color:var(--muted);font-size:.85rem}
       </div>
 
       <div class="feat-card">
-        <div class="shot shot-16">
-          <div class="shot-icon">📐</div>
-          <span>Screenshot: Camera panel with angle preset selected and framed object in viewport</span>
-        </div>
+        <img src="../images/SCS-Camera.png" alt="Camera panel with angle preset" class="feat-img">
         <div class="feat-body">
           <div class="feat-title"><h3>Smart Camera Framing</h3><span class="b bl">Lite</span></div>
           <p>8 angle presets plus custom azimuth/elevation. The camera calculates exact distance for any focal length so the object always fills the frame perfectly. Focal length and padding update live.</p>
@@ -295,9 +305,17 @@ footer,footer a{color:var(--muted);font-size:.85rem}
 
       <div class="feat-card">
         <div class="shot shot-16">
-          <div class="shot-icon">📦</div>
-          <span>Screenshot: Batch queue list with multiple objects and status indicators</span>
+          <div class="shot-icon">🎭</div>
+          <span>Screenshot: GOBO shadow pattern cast on an object in viewport</span>
         </div>
+        <div class="feat-body">
+          <div class="feat-title"><h3>GOBO Shadow Patterns</h3><span class="b bp">Pro</span></div>
+          <p>12 procedural shadow patterns &mdash; Venetian blinds, tree branches, hexagons, spotlights, and more &mdash; projected from a dedicated area light. Scale, rotate, and soften each pattern independently. No texture files: patterns are generated in-engine.</p>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <img src="../images/SCS-BRender.png" alt="Batch queue list with multiple objects" class="feat-img">
         <div class="feat-body">
           <div class="feat-title"><h3>Batch Rendering</h3><span class="b bp">Pro</span></div>
           <p>Queue any mix of meshes and armatures. Each object gets its own camera setup, lighting, floor placement, and DOF calculation. Normal, Clay, and Wireframe passes per item.</p>
@@ -316,13 +334,10 @@ footer,footer a{color:var(--muted);font-size:.85rem}
       </div>
 
       <div class="feat-card">
-        <div class="shot shot-16">
-          <div class="shot-icon">🎨</div>
-          <span>Screenshot: Post-processing panel and rendered result with bloom and vignette</span>
-        </div>
+        <img src="../images/SCS-Render.png" alt="Post-processing panel" class="feat-img">
         <div class="feat-body">
           <div class="feat-title"><h3>Post-Processing</h3><span class="b bp">Pro</span></div>
-          <p>Bloom, vignette, and watermark via Blender's compositor — no external software needed. Contact Sheet generates renders from all 8 angles and composites them into a grid automatically.</p>
+          <p>Bloom, vignette, lens distortion, and multi-layer glare via Blender's compositor — no external software needed. Add a watermark for client previews. Contact Sheet renders all 8 angles and composites a grid automatically.</p>
         </div>
       </div>
 
@@ -484,6 +499,11 @@ footer,footer a{color:var(--muted);font-size:.85rem}
           <td>Choose an intent (Subtle / Dramatic / Extreme Shallow) — f-stop calculated from object depth</td>
         </tr>
         <tr>
+          <td>Shadow Patterns</td>
+          <td>Manually build a shader + texture, rig a light to project it, tune by trial and error</td>
+          <td>Pick a GOBO pattern from the library — projected automatically from the GOBO light, adjustable in real-time</td>
+        </tr>
+        <tr>
           <td>Multiple Objects</td>
           <td>Repeat the entire setup for each asset — hours of repeated manual work</td>
           <td>Add to Batch Queue, press Start — each object gets full setup and renders unattended</td>
@@ -533,11 +553,12 @@ footer,footer a{color:var(--muted);font-size:.85rem}
           <tr><td>Render Profiles (Preview → Final + Social)</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Hardware Detection</td><td><span class="yes">✓</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>HDRI Environment Lighting</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>GOBO Shadow Patterns (12 procedural patterns)</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Adaptive Depth of Field</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Batch Rendering Queue</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Turntable Animation Export</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Contact Sheet (8-angle grid)</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
-          <tr><td>Bloom, Vignette &amp; Watermark</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
+          <tr><td>Bloom, Vignette, Glare, Lens Distortion &amp; Watermark</td><td><span class="no">—</span></td><td><span class="yes-p">✓</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Anime &amp; Stylized Pack (4 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Game Art Pack (4 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
           <tr><td>Extended Cinematic Pack (5 presets)</td><td><span class="no">—</span></td><td><span class="no">—</span></td><td><span class="yes-u">✓</span></td></tr>
